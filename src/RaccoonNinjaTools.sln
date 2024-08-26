@@ -1,0 +1,45 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raccoon.Ninja.Tools", "Raccoon.Ninja.Tools\Raccoon.Ninja.Tools.csproj", "{29D21046-EB8F-41C6-A784-77EE9ED9F63D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raccoon.Ninja.Tools.Tests", "Raccoon.Ninja.Tools.Tests\Raccoon.Ninja.Tools.Tests.csproj", "{2C79929A-AE9E-41EE-9409-0412D9DDC0BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raccoon.Ninja.Tools.Benchmark.Tests", "Raccoon.Ninja.Tools.Benchmark.Tests\Raccoon.Ninja.Tools.Benchmark.Tests.csproj", "{8C3F9632-AFB4-45FE-AF79-CE40B449D43C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00. Packages", "00. Packages", "{79C9F8E3-FD61-41FC-8315-F1AA8E9756D5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "99. Docs", "99. Docs", "{BFAC2229-AC90-46E1-AA66-FB8FDCEF2DEA}"
+	ProjectSection(SolutionItems) = preProject
+		..\readme.md = ..\readme.md
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "98. Tests", "98. Tests", "{5D0CD8FF-2EDA-47E1-8C16-8E1C37E228D4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "97. Benchmarks", "97. Benchmarks", "{E266BD83-7E76-4A55-9F88-231465649F9B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{29D21046-EB8F-41C6-A784-77EE9ED9F63D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29D21046-EB8F-41C6-A784-77EE9ED9F63D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29D21046-EB8F-41C6-A784-77EE9ED9F63D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29D21046-EB8F-41C6-A784-77EE9ED9F63D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C79929A-AE9E-41EE-9409-0412D9DDC0BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C79929A-AE9E-41EE-9409-0412D9DDC0BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C79929A-AE9E-41EE-9409-0412D9DDC0BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C79929A-AE9E-41EE-9409-0412D9DDC0BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C3F9632-AFB4-45FE-AF79-CE40B449D43C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C3F9632-AFB4-45FE-AF79-CE40B449D43C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C3F9632-AFB4-45FE-AF79-CE40B449D43C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C3F9632-AFB4-45FE-AF79-CE40B449D43C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{29D21046-EB8F-41C6-A784-77EE9ED9F63D} = {79C9F8E3-FD61-41FC-8315-F1AA8E9756D5}
+		{2C79929A-AE9E-41EE-9409-0412D9DDC0BE} = {5D0CD8FF-2EDA-47E1-8C16-8E1C37E228D4}
+		{8C3F9632-AFB4-45FE-AF79-CE40B449D43C} = {E266BD83-7E76-4A55-9F88-231465649F9B}
+	EndGlobalSection
+EndGlobal
