@@ -8,7 +8,7 @@ on:
 
 jobs:
   sonarcloud-analysis:
-    uses: brenordv/github-workflows/.github/workflows/template-qa-sonarcloud.yml
+    uses: brenordv/github-workflows/.github/workflows/template-qa-sonarcloud.yml@master
     with:
       projectKey: 'brenordv_nuget-raccoon-tools'
       organization: 'raccoon-ninja'
