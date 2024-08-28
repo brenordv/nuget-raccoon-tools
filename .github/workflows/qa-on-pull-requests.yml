@@ -1,4 +1,4 @@
-name: SonarCloud analysis on pull requests
+name: SonarCloud analysis on pull requests.
 
 on:
   push:
@@ -20,3 +20,4 @@ jobs:
     secrets:
       githubToken: ${{ secrets.GITHUB_TOKEN }}
       sonarToken: ${{ secrets.SONAR_TOKEN }}
+
