@@ -16,7 +16,7 @@ jobs:
       verbose: true
       sonarExclusions: '**/*Usings.cs'
       coverageExclusions: '**/*Usings.cs'
-      projectOrSolution: './src/'
+      projectOrSolution: './src/' 
 
     secrets:
       githubToken: ${{ secrets.GITHUB_TOKEN }}
