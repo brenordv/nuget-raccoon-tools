@@ -14,10 +14,11 @@ jobs:
       organization: 'raccoon-ninja'
       branchName: 'master'
       verbose: true
-      sonarExclusions: '**/*Usings.cs, **/Benchmark.Tests/**/*, **Tools.Tests/**/*'
-      coverageExclusions: '**/*Usings.cs, **/Benchmark.Tests/**/*, **Tools.Tests/**/*'
+      sonarExclusions: '**/*Usings.cs, src/Raccoon.Ninja.Tools.Benchmark.Tests/*, src/Raccoon.Ninja.Tools.Tests/*'
+      coverageExclusions: '**/*Usings.cs, src/Raccoon.Ninja.Tools.Benchmark.Tests/*, src/Raccoon.Ninja.Tools.Tests/*'
       projectOrSolution: './src/'
 
     secrets:
       githubToken: ${{ secrets.GITHUB_TOKEN }}
       sonarToken: ${{ secrets.SONAR_TOKEN }}
+
