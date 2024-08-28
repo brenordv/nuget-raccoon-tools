@@ -1,0 +1,23 @@
+name: Monthly SonarCloud Analysis
+
+on:
+  schedule:
+    # Runs at 2 AM UTC on the 1st of every month
+    # This will help keep me being on top of any new security issue. :)
+    - cron: '0 2 1 * *'
+
+jobs:
+  sonarcloud-analysis:
+    uses: brenordv/github-workflows/.github/workflows/template-qa-sonarcloud.yml@master
+    with:
+      projectKey: 'brenordv_nuget-raccoon-tools'
+      organization: 'raccoon-ninja'
+      branchName: 'master'
+      verbose: true
+      sonarExclusions: '**/*Usings.cs'
+      coverageExclusions: '**/*Usings.cs'
+      projectOrSolution: './src/'
+
+    secrets:
+      githubToken: ${{ secrets.GITHUB_TOKEN }}
+      sonarToken: ${{ secrets.SONAR_TOKEN }}

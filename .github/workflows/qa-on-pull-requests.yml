@@ -1,0 +1,24 @@
+name: SonarCloud analysis on pull requests.
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  sonarcloud-analysis:
+    uses: brenordv/github-workflows/.github/workflows/template-qa-sonarcloud.yml@master
+    with:
+      projectKey: 'brenordv_nuget-raccoon-tools'
+      organization: 'raccoon-ninja'
+      verbose: true
+      sonarExclusions: '**/*Usings.cs'
+      coverageExclusions: '**/*Usings.cs'
+      projectOrSolution: './src/' 
+
+    secrets:
+      githubToken: ${{ secrets.GITHUB_TOKEN }}
+      sonarToken: ${{ secrets.SONAR_TOKEN }}
+

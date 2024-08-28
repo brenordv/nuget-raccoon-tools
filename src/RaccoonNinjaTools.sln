@@ -8,15 +8,21 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raccoon.Ninja.Tools.Benchma
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00. Packages", "00. Packages", "{79C9F8E3-FD61-41FC-8315-F1AA8E9756D5}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "99. Docs", "99. Docs", "{BFAC2229-AC90-46E1-AA66-FB8FDCEF2DEA}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "98. Docs", "98. Docs", "{BFAC2229-AC90-46E1-AA66-FB8FDCEF2DEA}"
 	ProjectSection(SolutionItems) = preProject
 		..\readme.md = ..\readme.md
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "98. Tests", "98. Tests", "{5D0CD8FF-2EDA-47E1-8C16-8E1C37E228D4}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "99. Tests", "99. Tests", "{5D0CD8FF-2EDA-47E1-8C16-8E1C37E228D4}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "97. Benchmarks", "97. Benchmarks", "{E266BD83-7E76-4A55-9F88-231465649F9B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "96. Benchmarks", "96. Benchmarks", "{E266BD83-7E76-4A55-9F88-231465649F9B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "97. Pipelines", "97. Pipelines", "{33C62004-2764-4FE0-ABFF-9DF98623A59C}"
+	ProjectSection(SolutionItems) = preProject
+		..\.github\workflows\qa-auto-monthly.yml = ..\.github\workflows\qa-auto-monthly.yml
+		..\.github\workflows\qa-on-pull-requests.yml = ..\.github\workflows\qa-on-pull-requests.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
