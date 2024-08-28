@@ -14,8 +14,8 @@ jobs:
       projectKey: 'brenordv_nuget-raccoon-tools'
       organization: 'raccoon-ninja'
       verbose: true
-      sonarExclusions: '**/*Usings.cs, src/Raccoon.Ninja.Tools.Benchmark.Tests/*, src/Raccoon.Ninja.Tools.Tests/*'
-      coverageExclusions: '**/*Usings.cs, src/Raccoon.Ninja.Tools.Benchmark.Tests/*, src/Raccoon.Ninja.Tools.Tests/*'
+      sonarExclusions: '**/*Usings.cs, **/*Raccoon.Ninja.Tools.Benchmark.Tests/*, **/*Raccoon.Ninja.Tools.Tests/*'
+      coverageExclusions: '**/*Usings.cs, **/*Raccoon.Ninja.Tools.Benchmark.Tests/*, **/*Raccoon.Ninja.Tools.Tests/*'
       projectOrSolution: './src/' 
 
     secrets:
