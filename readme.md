@@ -41,40 +41,39 @@ Based on the benchmark results, generating a deterministic GUID using the `Guid5
 creating a regular GUID (UUID v4). Here are some key points:
 
 - Creating a regular GUID (`RegularGuid`) takes approximately 69.41 nanoseconds.
-- Generating a GUID with one argument (`Guid5WithOneArg`) takes approximately 304.11 nanoseconds, which is about 
-4.38 times slower than creating a regular GUID.
+- Generating a GUID with one argument (`Guid5WithOneArg`) takes approximately 558 nanoseconds, which is about 
+6 times slower than creating a regular GUID.
 - The performance decreases further as more arguments are added or when longer strings are used. 
 For example, generating a GUID with four arguments including a string of 10,000 chars 
-(`Guid5WithFourArgsMixedIncLongString`) takes approximately 3,127.68 nanoseconds, which is about 45.08 times slower 
-- than creating a regular GUID.
+(`Guid5WithFourArgsMixedIncLongString`).
 
-In summary, while the `Guid5` class provides the benefit of deterministic GUIDs, it comes with a performance cost 
-compared to generating regular GUIDs.
+While the `Guid5` class provides the benefit of deterministic GUIDs, it comes with a performance cost compared to 
+generating regular GUIDs.
 
 Keep in mind that we're talking about nanoseconds here, so the performance difference may not be significant, depending
-on your application and you have the benefit of deterministic GUIDs.
+on your application, and you have the benefit of deterministic GUIDs.
 
 > You can execute the benchmarks yourself by running the `Guid5Benchmarks` class in the 
 > `Raccoon.Ninja.Tools.Benchmark.Tests` project.
 
-```
 BenchmarkDotNet v0.14.0, Windows 10 (10.0.19045.4780/22H2/2022Update)
 Intel Core i7-9750H CPU 2.60GHz, 1 CPU, 12 logical and 6 physical cores
 .NET SDK 8.0.401
-  [Host]     : .NET 8.0.8 (8.0.824.36612), X64 RyuJIT AVX2
-  DefaultJob : .NET 8.0.8 (8.0.824.36612), X64 RyuJIT AVX2
-```
-| Method                                    |        Mean |     Error |     StdDev |      Median | Ratio | RatioSD | Rank |   Gen0 | Allocated | Alloc Ratio |
-|-------------------------------------------|------------:|----------:|-----------:|------------:|------:|--------:|-----:|-------:|----------:|------------:|
-| RegularGuid                               |    69.41 ns |  1.324 ns |   1.301 ns |    69.56 ns |  1.00 |    0.03 |    1 |      - |         - |          NA |
-| Guid5WithOneArg                           |   304.11 ns |  7.023 ns |  20.707 ns |   294.37 ns |  4.38 |    0.31 |    2 | 0.0238 |     152 B |          NA |
-| Guid5WithTwoArgsMixed                     |   350.74 ns | 10.822 ns |  31.396 ns |   341.18 ns |  5.06 |    0.46 |    3 | 0.0367 |     232 B |          NA |
-| Guid5WithTwoArgsOnlyStrings               |   358.71 ns |  8.304 ns |  24.486 ns |   352.34 ns |  5.17 |    0.36 |    3 | 0.0367 |     232 B |          NA |
-| Guid5WithThreeArgsMixed                   |   551.36 ns | 11.916 ns |  34.948 ns |   552.61 ns |  7.95 |    0.52 |    4 | 0.0520 |     328 B |          NA |
-| Guid5WithThreeArgsOnlyStrings             |   399.11 ns |  9.538 ns |  28.122 ns |   399.87 ns |  5.75 |    0.42 |    3 | 0.0420 |     264 B |          NA |
-| Guid5WithFourArgsMixedIncLongString       | 3,127.68 ns | 89.626 ns | 262.858 ns | 3,069.89 ns | 45.08 |    3.86 |    7 | 0.5302 |    3336 B |          NA |
-| Guid5WithFourArgsOnlyStringsIncLongString | 3,017.14 ns | 98.676 ns | 290.950 ns | 3,030.88 ns | 43.48 |    4.25 |    7 | 0.5226 |    3280 B |          NA |
-| Guid5WithLongString                       | 2,500.92 ns | 73.156 ns | 212.240 ns | 2,496.38 ns | 36.04 |    3.12 |    6 | 0.1793 |    1136 B |          NA |
+[Host]     : .NET 8.0.8 (8.0.824.36612), X64 RyuJIT AVX2
+DefaultJob : .NET 8.0.8 (8.0.824.36612), X64 RyuJIT AVX2
+
+
+| Method                                    |        Mean |      Error |    StdDev |      Median | Ratio | RatioSD | Rank |   Gen0 | Allocated | Alloc Ratio |
+|-------------------------------------------|------------:|-----------:|----------:|------------:|------:|--------:|-----:|-------:|----------:|------------:|  
+| RegularGuid                               |    88.35 ns |   3.445 ns |  10.16 ns |    88.18 ns |  1.01 |    0.17 |    1 |      - |         - |          NA |  
+| Guid5WithOneArg                           |   558.56 ns |  14.021 ns |  41.34 ns |   548.36 ns |  6.41 |    0.88 |    2 | 0.0353 |     224 B |          NA |  
+| Guid5WithTwoArgsMixed                     |   612.78 ns |  15.601 ns |  46.00 ns |   625.46 ns |  7.03 |    0.97 |    2 | 0.0477 |     304 B |          NA |  
+| Guid5WithTwoArgsOnlyStrings               |   598.57 ns |  18.596 ns |  54.83 ns |   593.49 ns |  6.87 |    1.01 |    2 | 0.0477 |     304 B |          NA |  
+| Guid5WithThreeArgsMixed                   |   779.63 ns |  19.215 ns |  56.66 ns |   756.28 ns |  8.94 |    1.22 |    4 | 0.0629 |     400 B |          NA |  
+| Guid5WithThreeArgsOnlyStrings             |   665.40 ns |  17.160 ns |  50.60 ns |   673.00 ns |  7.63 |    1.06 |    3 | 0.0534 |     336 B |          NA |
+| Guid5WithFourArgsMixedIncLongString       | 6,577.32 ns | 198.268 ns | 584.60 ns | 6,485.69 ns | 75.44 |   11.02 |    6 | 0.5417 |    3408 B |          NA |  
+| Guid5WithFourArgsOnlyStringsIncLongString | 6,308.70 ns | 167.784 ns | 494.71 ns | 6,168.23 ns | 72.36 |   10.12 |    6 | 0.5341 |    3352 B |          NA |  
+| Guid5WithLongString                       | 5,741.92 ns | 168.282 ns | 496.18 ns | 5,824.81 ns | 65.85 |    9.52 |    5 | 0.1907 |    1208 B |          NA |  
 
 
 ## List Extensions

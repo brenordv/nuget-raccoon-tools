@@ -1,7 +1,7 @@
 ﻿using BenchmarkDotNet.Running;
 using Raccoon.Ninja.Tools.Benchmark.Tests.Benchmarks;
 
-const int benchmarkToRun = 2;
+const int benchmarkToRun = 1;
 
 
 switch (benchmarkToRun)

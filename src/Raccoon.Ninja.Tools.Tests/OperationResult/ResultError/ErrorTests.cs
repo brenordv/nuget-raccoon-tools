@@ -24,7 +24,7 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult.ResultError
         [InlineData(null, null)]
         [InlineData("", null)]
         [InlineData(" ", null)]
-        public void Constructor_ShouldThrowException_WhenBothErrorMessageAndExceptionAreNullExplicitly(string errorMessage, Exception exception)
+        public void Constructor_ShouldThrowException_WhenBothErrorMessageIsNullExplicitly(string errorMessage, Exception exception)
         {
             // Act
             Action act = () => new Error(errorMessage, exception);
@@ -33,6 +33,19 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult.ResultError
             act.Should().Throw<OperationResultException>().WithMessage(InvalidCtorArgsMessage);
         }
 
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData(" ")]
+        public void Constructor_ShouldThrowException_WhenErrorMessageIsNull(string errorMessage)
+        {
+            // Act
+            Action act = () => new Error(errorMessage);
+
+            // Assert
+            act.Should().Throw<OperationResultException>().WithMessage("Error message is null or empty.");
+        }
+        
         [Fact]
         public void Constructor_ShouldSetErrorMessage_WhenOnlyErrorMessageIsProvided()
         {
