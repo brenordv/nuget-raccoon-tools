@@ -143,11 +143,6 @@ public class Result<TPayload>
     /// <returns>Result representation in </returns>
     public override string ToString()
     {
-        //If the error is null and the payload is not set.
-        //This shouldn't really happen.
-        if (_error is null && !_valueSet)
-            return "[Unknown] Operation not realized yet.";
-        
         return _error is null 
             ? $"[Success] {_value}" 
             : $"[Failure] {_error}";
