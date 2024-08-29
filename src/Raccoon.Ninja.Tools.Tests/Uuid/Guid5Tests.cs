@@ -100,6 +100,23 @@ public class Guid5Tests
         result.Should().NotBe(Guid.Empty);
     }
     
+    [Fact]
+    public void NewGuid_WithSimilarLongStrings_ShouldReturnValidAndUniqueGuids()
+    {
+        // Arrange
+        var longString1 = new string('a', 1000000);
+        var longString2 = new string('a', 1000000) + "b";
+        
+        // Act
+        var result1 = Guid5.NewGuid(longString1);
+        var result2 = Guid5.NewGuid(longString2);
+
+        // Assert
+        result1.Should().NotBe(Guid.Empty);
+        result2.Should().NotBe(Guid.Empty);
+        result1.Should().NotBe(result2);
+    }
+    
     #region Test Helpers
     public static TheoryData<object[]> GetValidArguments()
     {
