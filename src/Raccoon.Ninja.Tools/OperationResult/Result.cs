@@ -134,17 +134,23 @@ public class Result<TPayload>
         return onFailure(_error);
     }
 
+
     /// <summary>
-    /// TBD.
+    /// Returns a string representation of the result, indicating whether it is a success or a failure.
     /// </summary>
     /// <example>
-    /// TBD.
+    /// var successResult = new Result&lt;string&gt;("Success payload");
+    /// Console.WriteLine(successResult.ToString()); // Output: [Result:Success] Success payload
+    ///
+    /// var error = new Error("Error message");
+    /// var failureResult = new Result&lt;string&gt;(error);
+    /// Console.WriteLine(failureResult.ToString()); // Output: [Result:Failure] Error message
     /// </example>
-    /// <returns>Result representation in </returns>
+    /// <returns>A string that represents the current object.</returns>
     public override string ToString()
     {
         return _error is null 
-            ? $"[Success] {_value}" 
-            : $"[Failure] {_error}";
+            ? $"[Result:Success] {_value}" 
+            : $"[Result:Failure] {_error}";
     }
 }
