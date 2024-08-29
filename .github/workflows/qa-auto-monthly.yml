@@ -14,8 +14,8 @@ jobs:
       organization: 'raccoon-ninja'
       branchName: 'master'
       verbose: true
-      sonarExclusions: 'src/Raccoon.Ninja.Tools.*.Tests/**'
-      coverageExclusions: 'src/Raccoon.Ninja.Tools.*.Tests/**'
+      sonarExclusions: 'src/Raccoon.Ninja.Tools.*.Tests/**/*'
+      coverageExclusions: 'src/Raccoon.Ninja.Tools.*.Tests/**/*'
       projectOrSolution: './src/'
 
     secrets:
