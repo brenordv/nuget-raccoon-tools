@@ -1,5 +1,16 @@
 # Racoon Ninja Tools
-https://raccoon.ninja
+[![Build](https://github.com/brenordv/nuget-raccoon-tools/actions/workflows/qa-on-pull-requests.yml/badge.svg?branch=master)](https://github.com/brenordv/nuget-raccoon-tools/actions/workflows/qa-on-pull-requests.yml)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nuget-raccoon-tools&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=brenordv_nuget-raccoon-tools)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nuget-raccoon-tools&metric=bugs)](https://sonarcloud.io/summary/new_code?id=brenordv_nuget-raccoon-tools)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nuget-raccoon-tools&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=brenordv_nuget-raccoon-tools)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nuget-raccoon-tools&metric=coverage)](https://sonarcloud.io/summary/new_code?id=brenordv_nuget-raccoon-tools)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nuget-raccoon-tools&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=brenordv_nuget-raccoon-tools)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nuget-raccoon-tools&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=brenordv_nuget-raccoon-tools)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nuget-raccoon-tools&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=brenordv_nuget-raccoon-tools)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nuget-raccoon-tools&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=brenordv_nuget-raccoon-tools)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nuget-raccoon-tools&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=brenordv_nuget-raccoon-tools)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nuget-raccoon-tools&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=brenordv_nuget-raccoon-tools)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nuget-raccoon-tools&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=brenordv_nuget-raccoon-tools)
 
 ## Description
 This is a collection of helpers and tools I find useful enough to reuse in multiple projects.
@@ -250,3 +261,7 @@ This works exactly like the `Result<TPayload>` class, but it's more focused on v
 are checking if something is valid or not, and are not interested in any result object.
 
 It is basically a syntactic sugar for the `Result<TPayload>` class, where the payload is always `bool`.
+
+
+## Other
+Shamelessly plugging the link to my site: https://raccoon.ninja
