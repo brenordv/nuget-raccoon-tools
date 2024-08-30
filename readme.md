@@ -16,6 +16,8 @@
 This is a collection of helpers and tools I find useful enough to reuse in multiple projects.
 I hope this can help other people too. :) 
 
+## Changelog
+Check the [changelog](changelog.md) for the latest updates.
 
 # Features
 ## Deterministic Guid
@@ -88,9 +90,36 @@ DefaultJob : .NET 8.0.8 (8.0.824.36612), X64 RyuJIT AVX2
 
 
 ## List Extensions
-The `ListExtensions` class provides several useful extension methods for working with lists and other enumerable collections.
+The `ListExtensions` class provides several useful extension methods for working with lists and other enumerable 
+collections.
 
 ### Methods
+#### `SafeAll<T>`
+Determines whether all elements of a sequence satisfy a condition safely.
+
+**Parameters:**
+- `source` (IEnumerable\<T\>): An enumerable to test.
+- `predicate` (Func\<T, bool\>): A function to test each element for a condition.
+
+**Returns:**
+- bool: True if every element of the source sequence passes the test in the specified predicate. If source is empty or 
+null, returns false.
+
+**Example Usage:**
+```csharp
+var numbers = new List<int> { 1, 2, 3, 4, 5 };
+bool allEven = numbers.SafeAll(n => n % 2 == 0); // Output: False
+
+var emptyList = new List<int>();
+bool allEvenEmpty = emptyList.SafeAll(n => n % 2 == 0); // Output: False
+
+List<int> nullList = null;
+bool allEvenNull = nullList.SafeAll(n => n % 2 == 0); // Output: False
+
+var numbers2 = new List<int> { 2, 4, 6, 8 };
+bool allEven2 = numbers2.SafeAll(n => n % 2 == 0); // Output: True
+```
+
 #### `ForEachWithIndex<T>`
 Returns an iterable list containing every item and its index.
 

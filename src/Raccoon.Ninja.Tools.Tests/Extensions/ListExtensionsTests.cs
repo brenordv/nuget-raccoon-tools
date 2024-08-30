@@ -6,6 +6,95 @@ namespace Raccoon.Ninja.Tools.Tests.Extensions;
 public class ListExtensionsTests
 {
     [Fact]
+    public void SafeAll_NullSource_ReturnsFalse()
+    {
+        // Arrange
+        IEnumerable<int> source = null;
+
+        // Act
+        var result = source.SafeAll(x => true);
+
+        // Assert
+        result.Should().BeFalse();
+    }
+
+    [Fact]
+    public void SafeAll_EmptySource_ReturnsFalse()
+    {
+        // Arrange
+        var source = new List<int>();
+
+        // Act
+        var result = source.SafeAll(x => true);
+
+        // Assert
+        result.Should().BeFalse();
+    }
+
+    [Fact]
+    public void SafeAll_AllElementsSatisfyCondition_ReturnsTrue()
+    {
+        // Arrange
+        var source = new List<int> { 2, 4, 6, 8 };
+
+        // Act
+        var result = source.SafeAll(x => x % 2 == 0);
+
+        // Assert
+        result.Should().BeTrue();
+    }
+
+    [Fact]
+    public void SafeAll_NotAllElementsSatisfyCondition_ReturnsFalse()
+    {
+        // Arrange
+        var source = new List<int> { 2, 4, 5, 8 };
+
+        // Act
+        var result = source.SafeAll(x => x % 2 == 0);
+
+        // Assert
+        result.Should().BeFalse();
+    }
+
+    [Fact]
+    public void SafeAll_SingleElementSatisfiesCondition_ReturnsTrue()
+    {
+        // Arrange
+        var source = new List<int> { 2 };
+
+        // Act
+        var result = source.SafeAll(x => x % 2 == 0);
+
+        // Assert
+        result.Should().BeTrue();
+    }
+
+    [Fact]
+    public void SafeAll_SingleElementDoesNotSatisfyCondition_ReturnsFalse()
+    {
+        // Arrange
+        var source = new List<int> { 1 };
+
+        // Act
+        var result = source.SafeAll(x => x % 2 == 0);
+
+        // Assert
+        result.Should().BeFalse();
+    }
+
+    [Fact]
+    public void SafeAll_NullPredicate_ThrowsArgumentNullException()
+    {
+        // Arrange
+        var source = new List<int> { 1, 2, 3 };
+
+        // Act & Assert
+        source.Invoking(s => s.SafeAll(null))
+            .Should().Throw<ArgumentNullException>();
+    }
+
+    [Fact]
     public void ForEachWithIndex_EmptyList_ShouldReturnEmptyEnumerable()
     {
         // Arrange
