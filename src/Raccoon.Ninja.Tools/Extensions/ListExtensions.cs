@@ -3,6 +3,48 @@
 public static class ListExtensions
 {
     /// <summary>
+    ///     Determines whether all elements of a sequence satisfy a condition safely.
+    /// The difference between this method and the original <see cref="Enumerable.All{TSource}"/>
+    /// is that this method checks if the source is null or empty before trying to iterate over it.
+    /// The <see cref="Enumerable.All{TSource}"/> method will also return true if the IEnumerable
+    /// is empty.
+    /// This is usually not what we want, so this extension method works as a convenient way to
+    /// check if all items in the source satisfy the condition.
+    /// </summary>
+    /// <typeparam name="T">The type of the elements of the source.</typeparam>
+    /// <param name="source">An IEnumerable to test.</param>
+    /// <param name="predicate">A function to test each element for a condition.</param>
+    /// <returns>
+    ///     True if every element of the source sequence passes the test in the specified predicate, 
+    ///     or if the sequence is empty; otherwise, false. Returns false if the source is null.
+    /// </returns>
+    /// <example>
+    /// var numbers = new List&lt;int&gt; { 1, 2, 3, 4, 5 };
+    /// bool allEven = numbers.SafeAll(n => n % 2 == 0); // Output: False
+    ///
+    /// var empty = new List&lt;int&gt;();
+    /// bool allEven = numbers.SafeAll(n => n % 2 == 0); // Output: False
+    /// </example>
+    /// <exception cref="ArgumentNullException">If the predicate is null.</exception>
+    public static bool SafeAll<T>(this IEnumerable<T> source, Func<T, bool> predicate)
+    {
+        ArgumentNullException.ThrowIfNull(predicate);
+        
+        if (source is null) return false;
+
+        var itemCount = 0;
+
+        foreach (var item in source)
+        {
+            if (!predicate(item))
+                return false;
+            itemCount++;
+        }
+
+        return itemCount > 0;
+    }
+
+    /// <summary>
     ///     Returns an iterable list containing every item AND it's index.
     /// </summary>
     /// <param name="source">target IEnumerable</param>
