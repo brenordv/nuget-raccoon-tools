@@ -251,7 +251,7 @@ public class ListExtensionsTests
     }
 
     #region Test Helpers
-    public static TheoryData<IEnumerable<object>> GetValidArgumentsForEachWithIndex()
+    public static TheoryData<IList<object>> GetValidArgumentsForEachWithIndex()
     {
         return
         [

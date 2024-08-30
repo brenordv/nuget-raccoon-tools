@@ -201,7 +201,7 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
             var resultString = result.ToString();
 
             // Assert
-            resultString.Should().Be($"[Success] {payload}");
+            resultString.Should().Be($"[Result:Success] {payload}");
         }
 
         [Fact]
@@ -215,7 +215,7 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
             var resultString = result.ToString();
 
             // Assert
-            resultString.Should().Be($"[Failure] {error}");
+            resultString.Should().Be($"[Result:Failure] {error}");
         }
     }
 }
