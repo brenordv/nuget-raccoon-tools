@@ -1,5 +1,6 @@
 name: '.NET Build and Test'
 description: 'Builds a .NET project and runs tests'
+
 on:
   workflow_call:
     inputs:
@@ -16,7 +17,6 @@ on:
         default: 'Release'
 
 jobs:
-  using: "composite"
   steps:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
