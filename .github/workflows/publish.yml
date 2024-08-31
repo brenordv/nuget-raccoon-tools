@@ -7,7 +7,7 @@ on:
 
 jobs:
   test-code:
-    uses: brenordv/github-workflows/.github/workflows/.github/workflows/template-build-and-test-dotnet.yml@v1
+    uses: brenordv/github-workflows/.github/workflows/template-build-and-test-dotnet.yml@v1
     with:
       projectOrSolutionPath: './src/Raccoon.Ninja.Tools.sln'
 
@@ -35,7 +35,7 @@ jobs:
     secrets:
       githubToken: ${{ secrets.GITHUB_TOKEN }}
 
-    uses: brenordv/github-workflows/.github/workflows/.github/workflows/template-create-release-and-artifacts.yml@v1
+    uses: brenordv/github-workflows/.github/workflows/template-create-release-and-artifacts.yml@v1
     with:
         projectPath: './src/Raccoon.Ninja.Tools'
         projectFile: 'Raccoon.Ninja.Tools.csproj'
