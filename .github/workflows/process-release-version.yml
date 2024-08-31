@@ -25,6 +25,11 @@ on:
         description: 'Prefix for the release artifact'
         required: false
         type: string
+      isNugetPackage:
+        description: 'Indicates if the build produces a NuGet package'
+        required: false
+        default: false
+        type: boolean
 
     secrets:
       githubToken:
@@ -125,7 +130,7 @@ jobs:
           cd ./output
           Compress-Archive -Path ./* -DestinationPath ../$env:ARTIFACT_NAME
           cd ..
-    
+
       - name: Compressing artifact - Linux/MacOS
         if: ${{ matrix.os != 'windows-latest' }}
         run: |
@@ -133,6 +138,13 @@ jobs:
           cd ./output
           zip -r ../$ARTIFACT_NAME ./*
           cd ..
+
+      - name: Include target platform in NuGet package filename
+        if: ${{ inputs.isNugetPackage }}
+        run: |
+          NUGET_FILE=$(ls ./output/*.nupkg)
+          RENAMED_NUGET_FILE="${NUGET_FILE%.nupkg}-${{ matrix.platform }}.nupkg"
+          mv "$NUGET_FILE" "$RENAMED_NUGET_FILE"
 
       - name: Uploading artifact to release
         id: upload_to_release
@@ -145,4 +157,8 @@ jobs:
           draft: false
           prerelease: false
           fail_on_unmatched_files: true
-          files: ${{ env.RELEASE_FILE_PREFIX }}-${{ matrix.platform }}-${{ env.VERSION }}.zip
+          files: |
+            ${{ env.RELEASE_FILE_PREFIX }}-${{ matrix.platform }}-${{ env.VERSION }}.zip
+            if [ ${{ inputs.isNugetPackage }} ]; then
+              ./output/*-${{ matrix.platform }}.nupkg
+            fi
