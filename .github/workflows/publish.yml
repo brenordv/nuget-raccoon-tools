@@ -43,34 +43,30 @@ jobs:
         releaseFilePrefix: 'Raccoon.Ninja.Tools'
         isNugetPackage: true
 
-#  publish:
-#    needs: [sonarcloud-analysis, create-release]
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#      - name: Checkout code
-#        uses: actions/checkout@v3
-#
-#      - name: Set up .NET
-#        uses: actions/setup-dotnet@v4
-#        with:
-#          dotnet-version: '8.0.x' # Use the version your project targets
-#
-#      - name: Install dependencies
-#        run: dotnet restore
-#
-#      - name: Build the project
-#        run: dotnet build --configuration Release --no-restore
-#
-#      - name: Create the NuGet package
-#        run: dotnet pack --configuration Release --no-build --output ./nupkg
-#
-#      - name: Publish to GitHub Packages
-#        run: |
-#          dotnet nuget add source --username ${{ github.repository_owner }} --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
-#          dotnet nuget push ./nupkg/*.nupkg --source "github" --api-key ${{ secrets.GITHUB_TOKEN }}
-#
-#      - name: Publish to NuGet.org
-#        if: github.ref == 'refs/heads/master'
-#        run: dotnet nuget push ./nupkg/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
-#
+  publish:
+    #needs: [sonarcloud-analysis, create-release] # TODO: restore this after finished creating this job.
+    needs: [create-release]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x' # Use the version your project targets
+
+      - name: Install dependencies
+        run: dotnet restore
+
+      - name: Build the project
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Create the NuGet package
+        run: dotnet pack --configuration Release --no-build --output ./nupkg
+
+      - name: Publish to GitHub Packages
+        run: |
+          dotnet nuget add source --username ${{ github.repository_owner }} --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
+          dotnet nuget push ./nupkg/*.nupkg --source "github" --api-key ${{ secrets.GITHUB_TOKEN }}
