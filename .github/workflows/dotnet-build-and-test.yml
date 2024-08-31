@@ -23,6 +23,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Checkout the repository. Without this, the action will not have access to the code.
+      - name: Checkout
+        uses: actions/checkout@v4
+
       # Setup .NET SDK
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
@@ -31,7 +35,7 @@ jobs:
 
       - name: Where Am I? What is going on?
         run: |
-          echo "$(pwd) | ${{ env.projectOrSolutionPath }}"
+          echo "$(pwd) | ${{ inputs.projectOrSolutionPath }}"
           ls -la
 
       # Restore dependencies
