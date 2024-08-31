@@ -7,7 +7,7 @@ on:
 
 jobs:
   test-code:
-    uses: ./dotnet-build-and-test.yml
+    uses: ./dotnet-build-and-test.yml@deploy-pipelines
     with:
       project-path: './src/Raccoon.Ninja.Tools.sln'
       

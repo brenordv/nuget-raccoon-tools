@@ -1,17 +1,20 @@
 name: '.NET Build and Test'
 description: 'Builds a .NET project and runs tests'
-inputs:
-  project-path:
-    description: 'Path to the project or solution file'
-    required: true
-  dotnet-version:
-    description: '.NET SDK version'
-    required: false
-    default: '8.0.x'
-  build-configuration:
-    description: 'Build configuration'
-    required: false
-    default: 'Release'
+on:
+  workflow_call:
+    inputs:
+      project-path:
+        description: 'Path to the project or solution file'
+        required: true
+      dotnet-version:
+        description: '.NET SDK version'
+        required: false
+        default: '8.0.x'
+      build-configuration:
+        description: 'Build configuration'
+        required: false
+        default: 'Release'
+
 runs:
   using: "composite"
   steps:
