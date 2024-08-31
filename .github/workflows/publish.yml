@@ -43,33 +43,12 @@ jobs:
         releaseFilePrefix: 'Raccoon.Ninja.Tools'
         isNugetPackage: true
 
-  publish:
+  publish-to-github-packages:
     #needs: [sonarcloud-analysis, create-release] # TODO: restore this after finished creating this job.
     needs: [create-release]
-    runs-on: ubuntu-latest
-
-    permissions:
-      contents: write
-      packages: write
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x' # Use the version your project targets
-
-      - name: Build the project
-        run: dotnet build ./src/Raccoon.Ninja.Tools/Raccoon.Ninja.Tools.csproj --configuration Release
-
-      - name: Create the NuGet package
-        run: dotnet pack ./src/Raccoon.Ninja.Tools/Raccoon.Ninja.Tools.csproj --configuration Release --no-build --output ./nupkg
-
-      - name: Publish to GitHub Packages
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          dotnet nuget add source --username ${{ github.repository_owner }} --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
-          dotnet nuget push ./nupkg/*.nupkg --source "github" --api-key ${{ secrets.GITHUB_TOKEN }}
+    uses: ./.github/workflows/publish-template.yml
+    with:
+      projectPath: './src/Raccoon.Ninja.Tools'
+      projectFile: 'Raccoon.Ninja.Tools.csproj'
+      dotnetVersion: '8.0.x'
+      githubToken: ${{ secrets.GITHUB_TOKEN }}
