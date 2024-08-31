@@ -69,4 +69,4 @@ jobs:
 #
     secrets:
       githubToken: ${{ secrets.GITHUB_TOKEN }}
-      sonarToken: ${{ secrets.NUGET_API_KEY }}
+      #nugetApiKey: ${{ secrets.NUGET_API_KEY }}
