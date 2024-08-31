@@ -3,14 +3,14 @@ name: '.NET Build and Test'
 on:
   workflow_call:
     inputs:
-      project-path:
+      projectPath:
         description: 'Path to the project or solution file'
         required: true
-      dotnet-version:
+      dotnetVersion:
         description: '.NET SDK version'
         required: false
         default: '8.0.x'
-      build-configuration:
+      buildConfiguration:
         description: 'Build configuration'
         required: false
         default: 'Release'
@@ -23,16 +23,16 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: ${{ inputs.dotnet-version }}
+          dotnet-version: ${{ inputs.dotnetVersion }}
   
       - name: Restore dependencies
-        run: dotnet restore ${{ inputs.project-path }}
+        run: dotnet restore ${{ inputs.projectPath }}
         shell: bash
   
       - name: Build
-        run: dotnet build ${{ inputs.project-path }} --configuration ${{ inputs.build-configuration }} --no-restore
+        run: dotnet build ${{ inputs.projectPath }} --configuration ${{ inputs.buildConfiguration }} --no-restore
         shell: bash
   
       - name: Test
-        run: dotnet test ${{ inputs.project-path }} --configuration ${{ inputs.build-configuration }} --no-build --verbosity normal
+        run: dotnet test ${{ inputs.projectPath }} --configuration ${{ inputs.buildConfiguration }} --no-build --verbosity normal
         shell: bash
