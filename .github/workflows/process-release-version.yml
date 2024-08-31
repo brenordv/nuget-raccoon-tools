@@ -111,15 +111,17 @@ jobs:
         run: |
           dotnet build ${{ inputs.projectPath }}/${{ inputs.projectFile }} --configuration Release --output ./output
 
-      - name: Compressing artifact
+      - name: Compressing artifact - Windows
+        if: ${{ matrix.os == 'windows-latest' }}
         run: |
-          if [ "${{ matrix.os }}" == "windows-latest" ]; then
-            $env:ARTIFACT_NAME="${{ env.RELEASE_FILE_PREFIX }}-${{ matrix.platform }}-${{ env.VERSION }}.zip"
-            Compress-Archive -Path ./output -DestinationPath $env:ARTIFACT_NAME
-          else
+          $env:ARTIFACT_NAME="${{ env.RELEASE_FILE_PREFIX }}-${{ matrix.platform }}-${{ env.VERSION }}.zip"
+          Compress-Archive -Path ./output -DestinationPath $env:ARTIFACT_NAME
+
+      - name: Compressing artifact - Linux/MacOS
+        if: ${{ matrix.os != 'windows-latest' }}
+        run: |
             ARTIFACT_NAME="${{ env.RELEASE_FILE_PREFIX }}-${{ matrix.platform }}-${{ env.VERSION }}.zip"
             zip -r $ARTIFACT_NAME ./output
-          fi
 
       - name: Uploading artifact
         uses: actions/upload-artifact@v3
