@@ -6,6 +6,22 @@
         <Nullable>disable</Nullable>
         <Version>1.1.0</Version>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Title>Raccoon Ninja Tools</Title>
+        <Description>A collection of helpers and utilities to help improve and speed up development.</Description>
+        <Copyright>Copyrighted to the author (Breno RdV).</Copyright>
+        <PackageProjectUrl>https://github.com/brenordv/nuget-raccoon-tools</PackageProjectUrl>
+        <PackageLicenseFile>license.txt</PackageLicenseFile>
+        <RepositoryUrl>https://github.com/brenordv/nuget-raccoon-tools</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageTags>utils utility toolset chsarp-library guid5 uuid5 uuidv5 uuid guid functional</PackageTags>
+        <PackageReleaseNotes>Initial Release.</PackageReleaseNotes>
+        <Authors>Breno RdV</Authors>
+        <PackageReadmeFile>readme.md</PackageReadmeFile>
     </PropertyGroup>
+    
+    <ItemGroup>
+        <None Include="../../license.txt" Pack="true" PackagePath="\" />
+        <None Include="../../readme.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
 
 </Project>
