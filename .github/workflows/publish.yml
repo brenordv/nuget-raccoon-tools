@@ -27,12 +27,15 @@ jobs:
 
   create-release:
     needs: [test-code]
+
     permissions:
       deployments: write
       contents: write
+
     secrets:
       githubToken: ${{ secrets.GITHUB_TOKEN }}
       #nugetApiKey: ${{ secrets.NUGET_API_KEY }}
+
     uses:  ./.github/workflows/process-release-version.yml
     with:
         projectPath: './src/Raccoon.Ninja.Tools'
