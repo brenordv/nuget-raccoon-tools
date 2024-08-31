@@ -67,6 +67,6 @@ jobs:
 #        if: github.ref == 'refs/heads/master'
 #        run: dotnet nuget push ./nupkg/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
 #
-#    secrets:
-#      githubToken: ${{ secrets.GITHUB_TOKEN }}
-#      sonarToken: ${{ secrets.NUGET_API_KEY }}
+    secrets:
+      githubToken: ${{ secrets.GITHUB_TOKEN }}
+      sonarToken: ${{ secrets.NUGET_API_KEY }}
