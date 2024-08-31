@@ -48,6 +48,10 @@ jobs:
     needs: [create-release]
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+      packages: write
+
     secrets:
       githubToken: ${{ secrets.GITHUB_TOKEN }}
 
@@ -67,6 +71,8 @@ jobs:
         run: dotnet pack ./src/Raccoon.Ninja.Tools/Raccoon.Ninja.Tools.csproj --configuration Release --no-build --output ./nupkg
 
       - name: Publish to GitHub Packages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           dotnet nuget add source --username ${{ github.repository_owner }} --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
           dotnet nuget push ./nupkg/*.nupkg --source "github" --api-key ${{ secrets.GITHUB_TOKEN }}
