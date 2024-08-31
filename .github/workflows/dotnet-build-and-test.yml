@@ -31,7 +31,7 @@ jobs:
 
       - name: Where Am I? What is going on?
         run: |
-          echo "$(pwd) | ${{ env.VERSION }}"
+          echo "$(pwd) | ${{ env.projectOrSolutionPath }}"
           ls -la
 
       # Restore dependencies
