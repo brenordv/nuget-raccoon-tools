@@ -3,7 +3,7 @@ name: Publish
 on:
   push:
     branches:
-      - deploy-pipelines
+      - master
 
 jobs:
   test-code:
@@ -11,19 +11,19 @@ jobs:
     with:
       projectOrSolutionPath: './src/Raccoon.Ninja.Tools.sln'
 
-#  sonarcloud-analysis:
-#    uses: brenordv/github-workflows/.github/workflows/template-qa-sonarcloud.yml@v1
-#    with:
-#      projectKey: 'brenordv_nuget-raccoon-tools'
-#      organization: 'raccoon-ninja'
-#      verbose: true
-#      sonarExclusions: 'src/Raccoon.Ninja.Tools.*.Tests/**/*'
-#      coverageExclusions: 'src/Raccoon.Ninja.Tools.*.Tests/**/*'
-#      projectOrSolution: './src/'
-#
-#    secrets:
-#      githubToken: ${{ secrets.GITHUB_TOKEN }}
-#      sonarToken: ${{ secrets.SONAR_TOKEN }}
+  sonarcloud-analysis:
+    uses: brenordv/github-workflows/.github/workflows/template-qa-sonarcloud.yml@v1
+    with:
+      projectKey: 'brenordv_nuget-raccoon-tools'
+      organization: 'raccoon-ninja'
+      verbose: true
+      sonarExclusions: 'src/Raccoon.Ninja.Tools.*.Tests/**/*'
+      coverageExclusions: 'src/Raccoon.Ninja.Tools.*.Tests/**/*'
+      projectOrSolution: './src/'
+
+    secrets:
+      githubToken: ${{ secrets.GITHUB_TOKEN }}
+      sonarToken: ${{ secrets.SONAR_TOKEN }}
 
   create-release:
     needs: [test-code]
@@ -44,8 +44,7 @@ jobs:
         isNugetPackage: true
 
   publish-to-github-packages:
-    #needs: [sonarcloud-analysis, create-release] # TODO: restore this after finished creating this job.
-    needs: [create-release]
+    needs: [sonarcloud-analysis, create-release]
 
     permissions:
       contents: write
@@ -54,15 +53,14 @@ jobs:
     secrets:
       githubToken: ${{ secrets.GITHUB_TOKEN }}
 
-    uses: ./.github/workflows/publish-to-github-packages.yml
+    uses: brenordv/github-workflows/.github/workflows/template-publish-to-github-packages-dotnet.yml@v1
     with:
       projectPath: './src/Raccoon.Ninja.Tools'
       projectFile: 'Raccoon.Ninja.Tools.csproj'
       dotnetVersion: '8.0.x'
 
   publish-to-nuget:
-    #needs: [sonarcloud-analysis, create-release] # TODO: restore this after finished creating this job.
-    needs: [create-release]
+    needs: [sonarcloud-analysis, create-release]
 
     permissions:
       contents: write
@@ -71,7 +69,7 @@ jobs:
     secrets:
       nugetApiKey: ${{ secrets.NUGETAPIKEY }}
 
-    uses: ./.github/workflows/publish-to-nuget.yml
+    uses: brenordv/github-workflows/.github/workflows/template-publish-to-nuget.yml@v1
     with:
       projectPath: './src/Raccoon.Ninja.Tools'
       projectFile: 'Raccoon.Ninja.Tools.csproj'
