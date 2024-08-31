@@ -89,7 +89,7 @@ jobs:
           prerelease: false
 
   build:
-    needs: [create_release]
+    needs: [set_release_version, create_release]
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
