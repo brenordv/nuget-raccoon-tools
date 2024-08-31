@@ -46,7 +46,7 @@ jobs:
   publish-to-github-packages:
     #needs: [sonarcloud-analysis, create-release] # TODO: restore this after finished creating this job.
     needs: [create-release]
-    uses: ./.github/workflows/publish-template.yml
+    uses: ./.github/workflows/publish-to-github-packages.yml
     with:
       projectPath: './src/Raccoon.Ninja.Tools'
       projectFile: 'Raccoon.Ninja.Tools.csproj'
