@@ -41,7 +41,6 @@ on:
 
 jobs:
   set_release_version:
-    description: 'Set the release version for the project. This information is based on a tag inside the csproj.'
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.set_version.outputs.version }}
@@ -53,7 +52,6 @@ jobs:
         run: echo "version=$(cat ${{ inputs.projectFolder }}/${{ inputs.projectFile }} | grep -oP '(?<=<${{ inputs.csprojTag }}>).*(?=<\/${{ inputs.csprojTag }}>)')" >> $GITHUB_OUTPUT
 
   check_version:
-    description: 'Check if the version is already built and published.'
     needs: [set_release_version]
     runs-on: ubuntu-latest
     env:
