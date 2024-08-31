@@ -57,14 +57,11 @@ jobs:
         with:
           dotnet-version: '8.0.x' # Use the version your project targets
 
-      - name: Install dependencies
-        run: dotnet restore
-
       - name: Build the project
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build ./src/Raccoon.Ninja.Tools/Raccoon.Ninja.Tools.csproj --configuration Release
 
       - name: Create the NuGet package
-        run: dotnet pack --configuration Release --no-build --output ./nupkg
+        run: dotnet pack ./src/Raccoon.Ninja.Tools/Raccoon.Ninja.Tools.csproj --configuration Release --no-build --output ./nupkg
 
       - name: Publish to GitHub Packages
         run: |
