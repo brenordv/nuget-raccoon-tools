@@ -159,9 +159,6 @@ jobs:
           fail_on_unmatched_files: true
           files: |
             ${{ env.RELEASE_FILE_PREFIX }}-${{ matrix.platform }}-${{ env.VERSION }}.zip
-            if [ ${{ inputs.isNugetPackage }} ]; then
-              ./output/*-${{ matrix.platform }}.nupkg
-            fi
 
       - name: Uploading NuPkg artifact to release
         if: ${{ inputs.isNugetPackage }}
