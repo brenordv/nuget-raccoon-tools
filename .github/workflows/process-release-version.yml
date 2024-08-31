@@ -122,13 +122,13 @@ jobs:
         if: ${{ matrix.os == 'windows-latest' }}
         run: |
           $env:ARTIFACT_NAME="${{ env.RELEASE_FILE_PREFIX }}-${{ matrix.platform }}-${{ env.VERSION }}.zip"
-          Compress-Archive -Path ./output -DestinationPath $env:ARTIFACT_NAME
-
+          Compress-Archive -Path ./output/* -DestinationPath $env:ARTIFACT_NAME
+    
       - name: Compressing artifact - Linux/MacOS
         if: ${{ matrix.os != 'windows-latest' }}
         run: |
-            ARTIFACT_NAME="${{ env.RELEASE_FILE_PREFIX }}-${{ matrix.platform }}-${{ env.VERSION }}.zip"
-            zip -r $ARTIFACT_NAME ./output
+          ARTIFACT_NAME="${{ env.RELEASE_FILE_PREFIX }}-${{ matrix.platform }}-${{ env.VERSION }}.zip"
+          zip -r $ARTIFACT_NAME ./output/*
 
       - name: Uploading artifact to release
         id: upload_to_release
