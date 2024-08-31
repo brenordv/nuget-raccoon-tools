@@ -48,6 +48,9 @@ jobs:
     needs: [create-release]
     runs-on: ubuntu-latest
 
+    secrets:
+      githubToken: ${{ secrets.GITHUB_TOKEN }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
