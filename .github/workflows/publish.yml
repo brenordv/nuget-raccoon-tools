@@ -59,3 +59,4 @@ jobs:
       projectPath: './src/Raccoon.Ninja.Tools'
       projectFile: 'Raccoon.Ninja.Tools.csproj'
       dotnetVersion: '8.0.x'
+      githubToken: ${{ secrets.GITHUB_TOKEN }}
