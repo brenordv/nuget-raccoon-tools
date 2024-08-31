@@ -217,5 +217,36 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
             // Assert
             resultString.Should().Be($"[Result:Failure] {error}");
         }
+        
+        [Fact]
+        public void ForwardError_ShouldForwardError_WhenResultIsFailure()
+        {
+            // Arrange
+            var error = new Error("Error message");
+            var result = new Result<string>(error);
+
+            // Act
+            var forwardedResult = result.ForwardError<int>();
+
+            // Assert
+            forwardedResult.Process(
+                _ => throw new Exception("Should not be called"),
+                failure => failure.Should().Be(error)
+            );
+        }
+
+        [Fact]
+        public void ForwardError_ShouldThrowException_WhenResultIsSuccess()
+        {
+            // Arrange
+            var result = new Result<string>("Success payload");
+
+            // Act
+            var act = () => result.ForwardError<int>();
+
+            // Assert
+            act.Should().Throw<OperationResultException>()
+                .WithMessage("Cannot forward error from a successful result.");
+        }
     }
 }

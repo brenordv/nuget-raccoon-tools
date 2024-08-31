@@ -8,7 +8,7 @@ namespace Raccoon.Ninja.Tools.OperationResult;
 /// Represents the result of an operation, which can either be a success with a payload or a failure with an error.
 /// </summary>
 /// <typeparam name="TPayload">The type of the payload expected in case of success.</typeparam>
-public class Result<TPayload>
+public struct Result<TPayload>
 {
     /// <summary>
     /// Internal control to keep track if <see cref="_value"/> was already set.
@@ -134,6 +134,28 @@ public class Result<TPayload>
         return onFailure(_error);
     }
 
+    /// <summary>
+    /// Forwards the error from the current result to a new result with a different payload type.
+    /// This is a convenience method for cases where you just want to forward the error to the caller, so they will
+    /// take care of it.
+    /// </summary>
+    /// <typeparam name="TOther">The type of the payload for the new result.</typeparam>
+    /// <returns>A new result containing the forwarded error.</returns>
+    /// <exception cref="OperationResultException">Thrown if the current result is a success and has no error to forward.</exception>
+    /// <example>
+    /// <code>
+    /// var errorResult = new Result&lt;string&gt;(new Error("An error occurred"));
+    /// var forwardedResult = errorResult.ForwardError&lt;int&gt;(); // Result will have a different payload type, but same error.
+    /// Console.WriteLine(forwardedResult.ToString()); // Output: [Result:Failure] An error occurred
+    /// </code>
+    /// </example>
+    public Result<TOther> ForwardError<TOther>()
+    {
+        if (_valueSet || _error is null)
+            throw new OperationResultException("Cannot forward error from a successful result.");
+
+        return new Result<TOther>(_error);
+    }
 
     /// <summary>
     /// Returns a string representation of the result, indicating whether it is a success or a failure.

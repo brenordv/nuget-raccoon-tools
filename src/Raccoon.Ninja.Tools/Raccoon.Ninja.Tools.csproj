@@ -4,7 +4,7 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>disable</Nullable>
-        <Version>1.1.0</Version>
+        <Version>1.2.0</Version>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Title>Raccoon Ninja Tools</Title>
         <Description>A collection of helpers and utilities to help improve and speed up development.</Description>
@@ -14,7 +14,7 @@
         <RepositoryUrl>https://github.com/brenordv/nuget-raccoon-tools</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <PackageTags>utils utility toolset chsarp-library guid5 uuid5 uuidv5 uuid guid functional</PackageTags>
-        <PackageReleaseNotes>Initial Release.</PackageReleaseNotes>
+        <PackageReleaseNotes>Changed Result from class to struct.</PackageReleaseNotes>
         <Authors>Breno RdV</Authors>
         <PackageReadmeFile>readme.md</PackageReadmeFile>
     </PropertyGroup>
