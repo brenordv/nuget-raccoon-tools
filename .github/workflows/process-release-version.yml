@@ -52,6 +52,9 @@ jobs:
     env:
       VERSION: ${{ needs.set_release_version.outputs.version }}
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Check if this version is already built
         id: check_tag
         run: |
