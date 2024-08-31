@@ -15,10 +15,6 @@ on:
         description: 'Version of .NET to use'
         required: true
         type: string
-      githubToken:
-        description: 'GitHub token for authentication'
-        required: true
-        type: string
 
     secrets:
       githubToken:
