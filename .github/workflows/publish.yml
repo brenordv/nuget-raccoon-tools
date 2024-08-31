@@ -48,8 +48,8 @@ jobs:
     needs: [create-release]
 
     permissions:
-      deployments: write
       contents: write
+      packages: write
 
     secrets:
       githubToken: ${{ secrets.GITHUB_TOKEN }}
