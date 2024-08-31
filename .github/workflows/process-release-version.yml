@@ -113,7 +113,7 @@ jobs:
 
       - name: Compressing artifact
         run: |
-          if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
+          if [ "${{ matrix.os }}" == "windows-latest" ]; then
             $env:ARTIFACT_NAME="${{ env.RELEASE_FILE_PREFIX }}-${{ matrix.platform }}-${{ env.VERSION }}.zip"
             Compress-Archive -Path ./output -DestinationPath $env:ARTIFACT_NAME
           else
