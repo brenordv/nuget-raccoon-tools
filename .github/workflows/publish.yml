@@ -7,12 +7,12 @@ on:
 
 jobs:
   test-code:
-    uses: ./.github/workflows/dotnet-build-and-test.yml
+    uses: brenordv/github-workflows/.github/workflows/.github/workflows/template-build-and-test-dotnet.yml@v1
     with:
       projectOrSolutionPath: './src/Raccoon.Ninja.Tools.sln'
 
 #  sonarcloud-analysis:
-#    uses: brenordv/github-workflows/.github/workflows/template-qa-sonarcloud.yml@master
+#    uses: brenordv/github-workflows/.github/workflows/template-qa-sonarcloud.yml@v1
 #    with:
 #      projectKey: 'brenordv_nuget-raccoon-tools'
 #      organization: 'raccoon-ninja'
@@ -34,9 +34,8 @@ jobs:
 
     secrets:
       githubToken: ${{ secrets.GITHUB_TOKEN }}
-      #nugetApiKey: ${{ secrets.NUGET_API_KEY }}
 
-    uses:  ./.github/workflows/process-release-version.yml
+    uses: brenordv/github-workflows/.github/workflows/.github/workflows/template-create-release-and-artifacts.yml@v1
     with:
         projectPath: './src/Raccoon.Ninja.Tools'
         projectFile: 'Raccoon.Ninja.Tools.csproj'
