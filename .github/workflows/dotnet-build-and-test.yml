@@ -1,5 +1,4 @@
 name: '.NET Build and Test'
-description: 'Builds a .NET project and runs tests'
 
 on:
   workflow_call:
