@@ -59,3 +59,20 @@ jobs:
       projectPath: './src/Raccoon.Ninja.Tools'
       projectFile: 'Raccoon.Ninja.Tools.csproj'
       dotnetVersion: '8.0.x'
+
+  publish-to-nuget:
+    #needs: [sonarcloud-analysis, create-release] # TODO: restore this after finished creating this job.
+    needs: [create-release]
+
+    permissions:
+      contents: write
+      packages: write
+
+    secrets:
+      nugetApiKey: ${{ secrets.NUGETAPIKEY }}
+
+    uses: ./.github/workflows/publish-to-nuget.yml
+    with:
+      projectPath: './src/Raccoon.Ninja.Tools'
+      projectFile: 'Raccoon.Ninja.Tools.csproj'
+      dotnetVersion: '8.0.x'
