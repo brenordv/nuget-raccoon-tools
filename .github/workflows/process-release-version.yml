@@ -95,7 +95,39 @@ jobs:
           draft: false
           prerelease: false
 
-  build:
+  build-nuget-artifact:
+    if: ${{ inputs.isNugetPackage }}
+    needs: [set_release_version, create_release]
+    env:
+      VERSION: ${{ needs.set_release_version.outputs.version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ inputs.dotnetVersion }}
+
+      - name: Build Project
+        run: |
+          dotnet build ${{ inputs.projectPath }}/${{ inputs.projectFile }} --configuration Release --output ./output
+
+      - name: Uploading NuPkg artifact to release
+        id: upload_nuget_to_release
+        uses: softprops/action-gh-release@v2
+        env:
+          token: ${{ secrets.githubToken }}
+        with:
+          tag_name: ${{ env.VERSION }}
+          name: ${{ env.VERSION }}
+          draft: false
+          prerelease: false
+          fail_on_unmatched_files: true
+          files: |
+            ./output/*.nupkg
+
+  build-zip-artifacts:
     needs: [set_release_version, create_release]
     runs-on: ${{ matrix.os }}
     strategy:
@@ -139,20 +171,6 @@ jobs:
           zip -r ../$ARTIFACT_NAME ./*
           cd ..
 
-      - name: Include target platform in NuGet package filename - Linux/MacOS
-        if: ${{ inputs.isNugetPackage && matrix.os != 'windows-latest' }}
-        run: |
-          NUGET_FILE=$(ls ./output/*.nupkg)
-          RENAMED_NUGET_FILE="${NUGET_FILE%.nupkg}-${{ matrix.platform }}.nupkg"
-          mv "$NUGET_FILE" "$RENAMED_NUGET_FILE"
-    
-      - name: Include target platform in NuGet package filename - Windows
-        if: ${{ inputs.isNugetPackage && matrix.os == 'windows-latest' }}
-        run: |
-          $nugetFile = Get-ChildItem -Path ./output -Filter *.nupkg
-          $renamedNugetFile = "$($nugetFile.BaseName)-${{ matrix.platform }}.nupkg"
-          Rename-Item -Path $nugetFile.FullName -NewName $renamedNugetFile
-
       - name: Uploading ZIP artifact to release
         id: upload_zip_to_release
         uses: softprops/action-gh-release@v2
@@ -166,18 +184,3 @@ jobs:
           fail_on_unmatched_files: true
           files: |
             ${{ env.RELEASE_FILE_PREFIX }}-${{ matrix.platform }}-${{ env.VERSION }}.zip
-
-      - name: Uploading NuPkg artifact to release
-        if: ${{ inputs.isNugetPackage }}
-        id: upload_nuget_to_release
-        uses: softprops/action-gh-release@v2
-        env:
-          token: ${{ secrets.githubToken }}
-        with:
-          tag_name: ${{ env.VERSION }}
-          name: ${{ env.VERSION }}
-          draft: false
-          prerelease: false
-          fail_on_unmatched_files: true
-          files: |
-            ./output/*-${{ matrix.platform }}.nupkg
