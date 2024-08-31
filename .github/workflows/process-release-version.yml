@@ -24,10 +24,6 @@ on:
         description: '[Required] The target platform for the build. Example: "win-x64"'
         required: true
         type: string
-      targetRuntime:
-        description: '[Required] The target runtime for the build. Example: "net8.0"'
-        required: true
-        type: string
 
       releaseFilePrefix:
         description: '[Required] The prefix for the release file. Example: "MyRelease"'

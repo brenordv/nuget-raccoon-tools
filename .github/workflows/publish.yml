@@ -34,6 +34,7 @@ jobs:
         versionPattern: 'AssemblyVersion\("(.*)"\)'
         csprojTag: 'Version'
         releaseFilePrefix: 'Raccoon.Ninja.Tools'
+        dotnetVersion: '8.0.x'
 
 #  publish:
 #    needs: [sonarcloud-analysis, create-release]
