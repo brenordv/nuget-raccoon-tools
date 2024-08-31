@@ -139,12 +139,19 @@ jobs:
           zip -r ../$ARTIFACT_NAME ./*
           cd ..
 
-      - name: Include target platform in NuGet package filename
-        if: ${{ inputs.isNugetPackage }}
+      - name: Include target platform in NuGet package filename - Linux/MacOS
+        if: ${{ inputs.isNugetPackage && matrix.os != 'windows-latest' }}
         run: |
           NUGET_FILE=$(ls ./output/*.nupkg)
           RENAMED_NUGET_FILE="${NUGET_FILE%.nupkg}-${{ matrix.platform }}.nupkg"
           mv "$NUGET_FILE" "$RENAMED_NUGET_FILE"
+    
+      - name: Include target platform in NuGet package filename - Windows
+        if: ${{ inputs.isNugetPackage && matrix.os == 'windows-latest' }}
+        run: |
+          $nugetFile = Get-ChildItem -Path ./output -Filter *.nupkg
+          $renamedNugetFile = "$($nugetFile.BaseName)-${{ matrix.platform }}.nupkg"
+          Rename-Item -Path $nugetFile.FullName -NewName $renamedNugetFile
 
       - name: Uploading ZIP artifact to release
         id: upload_zip_to_release
