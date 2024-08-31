@@ -29,6 +29,11 @@ jobs:
         with:
           dotnet-version: ${{ inputs.dotnetVersion }}
 
+      - name: Where Am I? What is going on?
+        run: |
+          echo "$(pwd) | ${{ env.VERSION }}"
+          ls -la
+
       # Restore dependencies
       - name: Restore dependencies
         run: dotnet restore ${{ inputs.projectOrSolutionPath }}
