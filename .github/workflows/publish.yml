@@ -46,9 +46,16 @@ jobs:
   publish-to-github-packages:
     #needs: [sonarcloud-analysis, create-release] # TODO: restore this after finished creating this job.
     needs: [create-release]
+
+    permissions:
+      deployments: write
+      contents: write
+
+    secrets:
+      githubToken: ${{ secrets.GITHUB_TOKEN }}
+
     uses: ./.github/workflows/publish-to-github-packages.yml
     with:
       projectPath: './src/Raccoon.Ninja.Tools'
       projectFile: 'Raccoon.Ninja.Tools.csproj'
       dotnetVersion: '8.0.x'
-      githubToken: ${{ secrets.GITHUB_TOKEN }}

@@ -20,6 +20,11 @@ on:
         required: true
         type: string
 
+    secrets:
+      githubToken:
+        description: 'GitHub token to use for the workflow'
+        required: true
+
 jobs:
   publish:
     runs-on: ubuntu-latest
