@@ -13,6 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "98. Docs", "98. Docs", "{BF
 		..\readme.md = ..\readme.md
 		.gitignore = .gitignore
 		..\changelog.md = ..\changelog.md
+		..\license.txt = ..\license.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "99. Tests", "99. Tests", "{5D0CD8FF-2EDA-47E1-8C16-8E1C37E228D4}"
