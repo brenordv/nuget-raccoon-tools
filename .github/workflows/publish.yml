@@ -28,7 +28,7 @@ jobs:
 
   create-release:
     needs: [test-code]
-    uses: ./process-release-version.yml
+    uses:  ./.github/workflows/process-release-version.yml
     with:
         projectFolder: 'src/Raccoon.Ninja.Tools'
         projectFile: 'Raccoon.Ninja.Tools.csproj'
