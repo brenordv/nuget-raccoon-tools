@@ -31,7 +31,6 @@ jobs:
     with:
         projectFolder: 'src/Raccoon.Ninja.Tools'
         projectFile: 'Raccoon.Ninja.Tools.csproj'
-        versionPattern: 'AssemblyVersion\("(.*)"\)'
         csprojTag: 'Version'
         releaseFilePrefix: 'Raccoon.Ninja.Tools'
         dotnetVersion: '8.0.x'
