@@ -12,6 +12,7 @@ jobs:
       projectOrSolutionPath: './src/Raccoon.Ninja.Tools.sln'
 
   sonarcloud-analysis:
+    needs: [test-code]
     uses: brenordv/github-workflows/.github/workflows/template-qa-sonarcloud.yml@v1
     with:
       projectKey: 'brenordv_nuget-raccoon-tools'
