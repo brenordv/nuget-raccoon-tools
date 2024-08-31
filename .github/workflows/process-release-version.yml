@@ -98,6 +98,7 @@ jobs:
   build-nuget-artifact:
     if: ${{ inputs.isNugetPackage }}
     needs: [set_release_version, create_release]
+    runs-on: ubuntu-latest
     env:
       VERSION: ${{ needs.set_release_version.outputs.version }}
     steps:
