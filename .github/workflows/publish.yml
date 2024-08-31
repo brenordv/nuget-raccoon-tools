@@ -9,9 +9,8 @@ jobs:
   test-code:
     uses: ./.github/workflows/dotnet-build-and-test.yml
     with:
-      projectPath: './src/Raccoon.Ninja.Tools.sln'
-      
-    
+      projectOrSolutionPath: './src'
+
 #  sonarcloud-analysis:
 #    uses: brenordv/github-workflows/.github/workflows/template-qa-sonarcloud.yml@master
 #    with:

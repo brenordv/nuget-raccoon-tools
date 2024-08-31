@@ -3,36 +3,43 @@ name: '.NET Build and Test'
 on:
   workflow_call:
     inputs:
-      projectPath:
+      projectOrSolutionPath:
         description: 'Path to the project or solution file'
         required: true
+        type: string
       dotnetVersion:
         description: '.NET SDK version'
         required: false
         default: '8.0.x'
+        type: string
       buildConfiguration:
         description: 'Build configuration'
         required: false
         default: 'Release'
+        type: string
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
     steps:
+      # Setup .NET SDK
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: ${{ inputs.dotnetVersion }}
-  
+
+      # Restore dependencies
       - name: Restore dependencies
-        run: dotnet restore ${{ inputs.projectPath }}
+        run: dotnet restore ${{ inputs.projectOrSolutionPath }}
         shell: bash
-  
+
+      # Build the project
       - name: Build
-        run: dotnet build ${{ inputs.projectPath }} --configuration ${{ inputs.buildConfiguration }} --no-restore
+        run: dotnet build ${{ inputs.projectOrSolutionPath }} --configuration ${{ inputs.buildConfiguration }} --no-restore
         shell: bash
-  
+
+      # Run tests
       - name: Test
-        run: dotnet test ${{ inputs.projectPath }} --configuration ${{ inputs.buildConfiguration }} --no-build --verbosity normal
+        run: dotnet test ${{ inputs.projectOrSolutionPath }} --configuration ${{ inputs.buildConfiguration }} --no-build --verbosity normal
         shell: bash
