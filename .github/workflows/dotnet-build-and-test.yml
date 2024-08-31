@@ -15,7 +15,7 @@ on:
         required: false
         default: 'Release'
 
-runs:
+jobs:
   using: "composite"
   steps:
     - name: Setup .NET
