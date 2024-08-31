@@ -1,38 +1,34 @@
-name: Create Release for version
+name: 'Github Release'
+
 on:
   workflow_call:
     inputs:
-      projectFolder:
-        description: '[Required] The folder where the project is located. Example: "Folder.To.My.Project"'
+      projectPath:
+        description: 'Path to the project folder'
         required: true
         type: string
       projectFile:
-        description: '[Required] The project file. Example: "My.Project.csproj"'
+        description: 'Name of the project file'
         required: true
         type: string
       csprojTag:
-        description: '[Optional] Which tag in the csproj file will be used to fetch the version. Default: AssemblyVersion'
+        description: 'Tag in the csproj file to fetch the version'
         required: false
+        default: 'AssemblyVersion'
         type: string
-        default: AssemblyVersion
-        
       dotnetVersion:
-        description: '[Required] The version of .NET to use. Example: "8.0.x"'
-        required: true
+        description: 'Version of .NET to use'
+        required: false
+        default: '8.0.x'
         type: string
-      targetPlatform:
-        description: '[Required] The target platform for the build. Example: "win-x64"'
-        required: true
-        type: string
-
       releaseFilePrefix:
-        description: '[Required] The prefix for the release file. Example: "MyRelease"'
-        required: true
+        description: 'Prefix for the release artifact'
+        required: false
         type: string
 
     secrets:
       githubToken:
-        description: '[Required] The GitHub token to use for the workflow.'
+        description: 'GitHub token to use for the workflow'
         required: true
 
 jobs:
@@ -43,170 +39,82 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Define next release version
         id: set_version
-        run: echo "version=$(cat ${{ inputs.projectFolder }}/${{ inputs.projectFile }} | grep -oP '(?<=<${{ inputs.csprojTag }}>).*(?=<\/${{ inputs.csprojTag }}>)')" >> $GITHUB_OUTPUT
+        run: |
+          version=$(grep -oP '(?<=<${{ inputs.csprojTag }}>).*(?=<\/${{ inputs.csprojTag }}>)' ${{ inputs.projectPath }}/${{ inputs.projectFile }})
+          echo "version=$version" >> $GITHUB_OUTPUT
 
-  check_version:
+  create_tag:
     needs: [set_release_version]
     runs-on: ubuntu-latest
     env:
       VERSION: ${{ needs.set_release_version.outputs.version }}
-    outputs:
-      tag_exists: ${{ steps.check_tag.outputs.tag_exists }}
-      proceed_with_publish: ${{ steps.check_tag.outputs.proceed_with_publish }}
-      artifact_name: ${{ steps.set_artifact_name.outputs.artifact_name }}
     steps:
-      - name: Set Artifact Name
-        id: set_artifact_name
-        run: |
-          echo "artifact_name=${{ inputs.releaseFilePrefix }}_${{ inputs.targetPlatform }}_${{ env.VERSION }}" >> $GITHUB_OUTPUT
       - name: Check if this version is already built
         id: check_tag
         run: |
           TAG_EXISTS=$(curl -o /dev/null -s -w "%{http_code}\n" -H "Authorization: token ${{ secrets.githubToken }}" https://api.github.com/repos/${{ github.repository }}/git/refs/tags/${{ env.VERSION }})
-
           if [[ "$TAG_EXISTS" -eq 200 ]]; then
-            echo "Tag exists. Checking for release asset."
-            RELEASE_ID=$(curl -s -H "Authorization: token ${{ secrets.githubToken }}" https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ env.VERSION }} | jq -r '.id')
-
-            if [[ -z "$RELEASE_ID" || "$RELEASE_ID" == "null" ]]; then
-              echo "Release ID is empty or null."
-              echo "tag_exists=false" >> $GITHUB_OUTPUT
-              exit 0
-            fi
-
-            RAW_RESPONSE=$(curl -s -H "Authorization: token ${{ secrets.githubToken }}" https://api.github.com/repos/${{ github.repository }}/releases/$RELEASE_ID/assets)
-            echo "Raw Response: $RAW_RESPONSE"
-
-            JSON_TYPE=$(echo "$RAW_RESPONSE" | jq -r 'type')
-            if [[ "$JSON_TYPE" == "object" ]]; then
-              echo "RAW_RESPONSE is a JSON object."
-              # Check if RAW_RESPONSE contains a "message" field with the value "Not Found"
-              MESSAGE_VALUE=$(echo "$RAW_RESPONSE" | jq -r '.message // ""')
-          
-              if [[ "$MESSAGE_VALUE" == "Not Found" ]]; then
-                echo "No assets found for this release. Proceeding to publish."
-                echo "tag_exists=true" >> $GITHUB_OUTPUT
-                exit 0
-              elif [[ ! -z "$MESSAGE_VALUE" ]]; then
-                echo "An unexpected error occurred: $MESSAGE_VALUE. Exiting."
-                exit 1
-              fi
-
-            elif [[ "$JSON_TYPE" == "array" ]]; then
-              echo "RAW_RESPONSE is a JSON array."
-              ASSET_EXISTS=$(echo "$RAW_RESPONSE" | jq -r '.[] | select(.name=="${{ steps.set_artifact_name.outputs.artifact_name }}.zip").id')
-
-              echo "tag_exists=true" >> $GITHUB_OUTPUT
-
-              if [[ ! -z "$ASSET_EXISTS" ]]; then
-                echo "Release asset exists. No need to publish."
-              else
-                echo "Release asset does not exist."
-              fi
-            else
-              echo "RAW_RESPONSE is neither a JSON object nor an array. Type: $JSON_TYPE"
-              echo "tag_exists=false" >> $GITHUB_OUTPUT
-              exit 1
-            fi
-
+            echo "Tag already exists. Failing the pipeline."
+            exit 1
           else
-            echo "Tag does not exist."
+            echo "Tag does not exist. Proceeding."
           fi
 
-  build_info:
-    needs: [set_release_version, check_version]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        run: |
-          echo "Version: ${{ needs.set_release_version.outputs.version }}"
-
-  build:
-    needs: [set_release_version, check_version]
-    permissions:
-      deployments: write
-      contents: write
-    runs-on: windows-latest
-    env:
-      VERSION: ${{ needs.set_release_version.outputs.version }}
-      ARTIFACT_NAME: ${{ needs.check_tag.outputs.artifact_name }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: ${{ inputs.dotnetVersion }}
-
-      - name: Build Project
-        shell: pwsh
-        run: |
-          pushd './${{ inputs.projectFolder }}'
-          dotnet build --configuration Release --output ./output
-          popd
-
-      - name: Compressing artifact
-        run: |
-          $currentPath = Get-Location
-          Compress-Archive -Path "$currentPath\${{ inputs.projectFolder }}\output\*" -DestinationPath "${{ env.ARTIFACT_NAME }}.zip"
-
-      - name: Uploading artifact
-        id: upload_artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: "${{ env.ARTIFACT_NAME }}"
-          path: "${{ env.ARTIFACT_NAME }}.zip"
-          if-no-files-found: error
-
-  publish-github-release:
-    needs: [ set_release_version, check_version, build ]
-    permissions:
-      contents: write
-    runs-on: ubuntu-latest
-    env:
-      VERSION: ${{ needs.set_release_version.outputs.version }}
-      ARTIFACT_NAME: ${{ needs.check_tag.outputs.artifact_name }}
-    steps:
-      - name: Where Am I? What is going on?
-        run: |
-          echo "$(pwd) | ${{ env.VERSION }}"
-          ls -la
-
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Git
-        run: |
-          git config user.name "GitHub Actions"
-          git config user.email "github-actions@github.com"
-
-      - name: Downloading artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: "${{ env.ARTIFACT_NAME }}"
-
-      - name: Extracting artifact
-        run: |
-          unzip "${{ env.ARTIFACT_NAME }}.zip" -d "./output"
-
       - name: Create Tag
-        if: needs.check_tag.outputs.tag_exists == false
         run: |
           git tag ${{ env.VERSION }}
           git push origin ${{ env.VERSION }}
 
+  create_release:
+    needs: [create_tag]
+    runs-on: ubuntu-latest
+    env:
+      VERSION: ${{ needs.set_release_version.outputs.version }}
+    steps:
       - name: Create Release
         id: create_release
         uses: softprops/action-gh-release@v1
         env:
-          token: ${{ secrets.githubToken }}
+          GITHUB_TOKEN: ${{ secrets.githubToken }}
         with:
           tag_name: ${{ env.VERSION }}
           name: ${{ env.VERSION }}
           draft: false
           prerelease: false
-          fail_on_unmatched_files: true
-          files: "${{ env.ARTIFACT_NAME }}.zip"
+
+  build:
+    needs: [create_release]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        platform: [linux-x64, win-x64, osx-x64]
+    env:
+      VERSION: ${{ needs.set_release_version.outputs.version }}
+      RELEASE_FILE_PREFIX: ${{ inputs.releaseFilePrefix }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ inputs.dotnetVersion }}
+
+      - name: Build Project
+        run: |
+          dotnet build ${{ inputs.projectPath }}/${{ inputs.projectFile }} --configuration Release --output ./output
+
+      - name: Compressing artifact
+        run: |
+          ARTIFACT_NAME="${{ env.RELEASE_FILE_PREFIX }}-${{ matrix.platform }}-${{ env.VERSION }}.zip"
+          zip -r $ARTIFACT_NAME ./output
+
+      - name: Uploading artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: "${{ env.RELEASE_FILE_PREFIX }}-${{ matrix.platform }}-${{ env.VERSION }}"
+          path: "${{ env.RELEASE_FILE_PREFIX }}-${{ matrix.platform }}-${{ env.VERSION }}.zip"

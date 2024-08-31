@@ -36,8 +36,6 @@ jobs:
         projectFile: 'Raccoon.Ninja.Tools.csproj'
         csprojTag: 'Version'
         releaseFilePrefix: 'Raccoon.Ninja.Tools'
-        dotnetVersion: '8.0.x'
-        targetPlatform: 'win-x64'
 
 #  publish:
 #    needs: [sonarcloud-analysis, create-release]
