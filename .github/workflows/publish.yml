@@ -36,6 +36,7 @@ jobs:
         projectFile: 'Raccoon.Ninja.Tools.csproj'
         csprojTag: 'Version'
         releaseFilePrefix: 'Raccoon.Ninja.Tools'
+        isNugetPackage: true
 
 #  publish:
 #    needs: [sonarcloud-analysis, create-release]
