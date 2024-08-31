@@ -146,9 +146,9 @@ jobs:
           RENAMED_NUGET_FILE="${NUGET_FILE%.nupkg}-${{ matrix.platform }}.nupkg"
           mv "$NUGET_FILE" "$RENAMED_NUGET_FILE"
 
-      - name: Uploading artifact to release
-        id: upload_to_release
-        uses: softprops/action-gh-release@v1
+      - name: Uploading ZIP artifact to release
+        id: upload_zip_to_release
+        uses: softprops/action-gh-release@v2
         env:
           token: ${{ secrets.githubToken }}
         with:
@@ -162,3 +162,18 @@ jobs:
             if [ ${{ inputs.isNugetPackage }} ]; then
               ./output/*-${{ matrix.platform }}.nupkg
             fi
+
+      - name: Uploading NuPkg artifact to release
+        if: ${{ inputs.isNugetPackage }}
+        id: upload_nuget_to_release
+        uses: softprops/action-gh-release@v2
+        env:
+          token: ${{ secrets.githubToken }}
+        with:
+          tag_name: ${{ env.VERSION }}
+          name: ${{ env.VERSION }}
+          draft: false
+          prerelease: false
+          fail_on_unmatched_files: true
+          files: |
+            ./output/*-${{ matrix.platform }}.nupkg
