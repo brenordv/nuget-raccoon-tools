@@ -8,6 +8,7 @@
 *.userosscache
 .DS_Store
 .cr/
+nupkg/
 .fleet/
 .idea/
 .idea/**/aws.xml

@@ -1,0 +1,76 @@
+name: Publish
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  test-code:
+    uses: brenordv/github-workflows/.github/workflows/template-build-and-test-dotnet.yml@v1
+    with:
+      projectOrSolutionPath: './src/Raccoon.Ninja.Tools.sln'
+
+  sonarcloud-analysis:
+    uses: brenordv/github-workflows/.github/workflows/template-qa-sonarcloud.yml@v1
+    with:
+      projectKey: 'brenordv_nuget-raccoon-tools'
+      organization: 'raccoon-ninja'
+      verbose: true
+      sonarExclusions: 'src/Raccoon.Ninja.Tools.*.Tests/**/*'
+      coverageExclusions: 'src/Raccoon.Ninja.Tools.*.Tests/**/*'
+      projectOrSolution: './src/'
+
+    secrets:
+      githubToken: ${{ secrets.GITHUB_TOKEN }}
+      sonarToken: ${{ secrets.SONAR_TOKEN }}
+
+  create-release:
+    needs: [test-code]
+
+    permissions:
+      deployments: write
+      contents: write
+
+    secrets:
+      githubToken: ${{ secrets.GITHUB_TOKEN }}
+
+    uses: brenordv/github-workflows/.github/workflows/template-create-release-and-artifacts.yml@v1
+    with:
+        projectPath: './src/Raccoon.Ninja.Tools'
+        projectFile: 'Raccoon.Ninja.Tools.csproj'
+        csprojTag: 'Version'
+        releaseFilePrefix: 'Raccoon.Ninja.Tools'
+        isNugetPackage: true
+
+  publish-to-github-packages:
+    needs: [sonarcloud-analysis, create-release]
+
+    permissions:
+      contents: write
+      packages: write
+
+    secrets:
+      githubToken: ${{ secrets.GITHUB_TOKEN }}
+
+    uses: brenordv/github-workflows/.github/workflows/template-publish-to-github-packages-dotnet.yml@v1
+    with:
+      projectPath: './src/Raccoon.Ninja.Tools'
+      projectFile: 'Raccoon.Ninja.Tools.csproj'
+      dotnetVersion: '8.0.x'
+
+  publish-to-nuget:
+    needs: [sonarcloud-analysis, create-release]
+
+    permissions:
+      contents: write
+      packages: write
+
+    secrets:
+      nugetApiKey: ${{ secrets.NUGETAPIKEY }}
+
+    uses: brenordv/github-workflows/.github/workflows/template-publish-to-nuget.yml@v1
+    with:
+      projectPath: './src/Raccoon.Ninja.Tools'
+      projectFile: 'Raccoon.Ninja.Tools.csproj'
+      dotnetVersion: '8.0.x'

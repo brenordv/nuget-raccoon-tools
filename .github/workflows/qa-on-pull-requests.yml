@@ -1,9 +1,6 @@
 name: SonarCloud analysis on pull requests.
 
 on:
-  push:
-    branches:
-      - '**'
   pull_request:
     types: [opened, synchronize, reopened]
 
