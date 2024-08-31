@@ -72,10 +72,12 @@ jobs:
           git push origin ${{ env.VERSION }}
 
   create_release:
-    needs: [set_release_version, create_tag]
+    needs: [create_tag]
     runs-on: ubuntu-latest
     env:
       VERSION: ${{ needs.set_release_version.outputs.version }}
+    outputs:
+      release_id: ${{ steps.create_release.outputs.id }}
     steps:
       - name: Create Release
         id: create_release
@@ -123,8 +125,20 @@ jobs:
             ARTIFACT_NAME="${{ env.RELEASE_FILE_PREFIX }}-${{ matrix.platform }}-${{ env.VERSION }}.zip"
             zip -r $ARTIFACT_NAME ./output
 
-      - name: Uploading artifact
-        uses: actions/upload-artifact@v3
+      - name: Uploading artifact to release - Windows
+        if: ${{ matrix.os == 'windows-latest' }}
+        uses: actions/upload-release-asset@v1
         with:
-          name: "${{ env.RELEASE_FILE_PREFIX }}-${{ matrix.platform }}-${{ env.VERSION }}"
-          path: "${{ env.RELEASE_FILE_PREFIX }}-${{ matrix.platform }}-${{ env.VERSION }}.zip"
+          upload_url: ${{ needs.create_release.outputs.release_id }}
+          asset_path: $env:ARTIFACT_NAME
+          asset_name: "${{ env.RELEASE_FILE_PREFIX }}-${{ matrix.platform }}-${{ env.VERSION }}.zip"
+          asset_content_type: application/zip
+
+      - name: Uploading artifact to release - Linux/MacOS
+        if: ${{ matrix.os != 'windows-latest' }}
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ needs.create_release.outputs.release_id }}
+          asset_path: $ARTIFACT_NAME
+          asset_name: "${{ env.RELEASE_FILE_PREFIX }}-${{ matrix.platform }}-${{ env.VERSION }}.zip"
+          asset_content_type: application/zip
