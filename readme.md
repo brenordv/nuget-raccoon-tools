@@ -265,9 +265,8 @@ class Program
 ```
 
 ### Performance
-Ok, I know this type of thing should probably be a `readonly struct` to have better performance and avoid too many
-objects allocated in memory. However, I wanted the possibility of creating inherited classes without breaking existing
-code.
+Quick update here. I caved in and changed from `class` to `readonly struct`. I think the performance benefits, thread
+safety, and immutability are worth it. Thankfully, this won't affect anyone, because the contracts are the same.
 
 Below are the results of the benchmark tests for instantiating Classes, Struct, Readonly Struct, and Records.
 I'm aware that they are not the best, but it's good enough for a brief comparison.
@@ -280,17 +279,7 @@ I'm aware that they are not the best, but it's good enough for a brief compariso
 | NewRecord         | 5.6249 ns | 0.2198 ns | 0.6482 ns | 5.5565 ns |    2 | 0.0051 |      32 B |
 
 To no one's surprise, instantiating a `struct` or `readonly struct` is by far the fastest option and won't allocate any
-memory. However, we're talking about nanoseconds here, so the difference may not be significant in most cases.
-
-TBH, I'm bothered by the performance difference, but I think the flexibility is worth it. Maybe someday in the future I
-can change that, but for now, I'll keep it as it is.
-
-## Validation Result
-This works exactly like the `Result<TPayload>` class, but it's more focused on validation scenarios, meaning that you 
-are checking if something is valid or not, and are not interested in any result object.
-
-It is basically a syntactic sugar for the `Result<TPayload>` class, where the payload is always `bool`.
-
+memory.
 
 ## Other
 Shamelessly plugging the link to my site: https://raccoon.ninja
