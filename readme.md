@@ -1,5 +1,11 @@
 # Racoon Ninja Tools
-[![Build](https://github.com/brenordv/nuget-raccoon-tools/actions/workflows/qa-on-pull-requests.yml/badge.svg?branch=master)](https://github.com/brenordv/nuget-raccoon-tools/actions/workflows/qa-on-pull-requests.yml)
+[![Publish](https://github.com/brenordv/nuget-raccoon-tools/actions/workflows/publish.yml/badge.svg)](https://github.com/brenordv/nuget-raccoon-tools/actions/workflows/publish.yml)
+![GitHub Release](https://img.shields.io/github/v/release/brenordv/nuget-raccoon-tools)
+![NuGet Version](https://img.shields.io/nuget/v/Raccoon.Ninja.Tools)
+![NuGet Downloads](https://img.shields.io/nuget/dt/Raccoon.Ninja.Tools)
+
+---
+
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nuget-raccoon-tools&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=brenordv_nuget-raccoon-tools)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nuget-raccoon-tools&metric=bugs)](https://sonarcloud.io/summary/new_code?id=brenordv_nuget-raccoon-tools)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nuget-raccoon-tools&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=brenordv_nuget-raccoon-tools)
@@ -11,6 +17,7 @@
 [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nuget-raccoon-tools&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=brenordv_nuget-raccoon-tools)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nuget-raccoon-tools&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=brenordv_nuget-raccoon-tools)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nuget-raccoon-tools&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=brenordv_nuget-raccoon-tools)
+---
 
 ## Description
 This is a collection of helpers and tools I find useful enough to reuse in multiple projects.
