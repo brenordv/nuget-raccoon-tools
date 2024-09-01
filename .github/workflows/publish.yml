@@ -27,7 +27,7 @@ jobs:
       sonarToken: ${{ secrets.SONAR_TOKEN }}
 
   create-release:
-    needs: [test-code]
+    needs: [sonarcloud-analysis, test-code]
 
     permissions:
       deployments: write
@@ -45,7 +45,7 @@ jobs:
         isNugetPackage: true
 
   publish-to-github-packages:
-    needs: [sonarcloud-analysis, create-release]
+    needs: [sonarcloud-analysis, create-release, test-code]
 
     permissions:
       contents: write
@@ -61,7 +61,7 @@ jobs:
       dotnetVersion: '8.0.x'
 
   publish-to-nuget:
-    needs: [sonarcloud-analysis, create-release]
+    needs: [sonarcloud-analysis, create-release, test-code]
 
     permissions:
       contents: write
