@@ -8,7 +8,7 @@ namespace Raccoon.Ninja.Tools.OperationResult;
 /// Represents the result of an operation, which can either be a success with a payload or a failure with an error.
 /// </summary>
 /// <typeparam name="TPayload">The type of the payload expected in case of success.</typeparam>
-public struct Result<TPayload>
+public readonly struct Result<TPayload>
 {
     /// <summary>
     /// Internal control to keep track if <see cref="_value"/> was already set.
