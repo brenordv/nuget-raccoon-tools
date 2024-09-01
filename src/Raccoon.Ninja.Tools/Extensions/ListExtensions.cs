@@ -370,17 +370,16 @@ public static class ListExtensions
         return targetIndex;
     }
 
+    /// <summary>
+    ///  Ensures that the list is not null or empty.
+    /// </summary>
+    /// <param name="list">List to be checked</param>
+    /// <typeparam name="T">Type of the objects in the list</typeparam>
+    /// <exception cref="ArgumentException">Thrown if the list is null or empty.</exception>
     private static void EnsureListIsWorkable<T>(ICollection<T> list)
     {
         if (list.HasElements()) return;
         throw new ArgumentException("The list is empty or null.");
     }
-    
-    private static void EnsureChunkSizeIsPositive(int chunkSize)
-    {
-        if (chunkSize > 0) return;
-        throw new ArgumentException("The chunk size must be greater than 0.");
-    }
-    
     #endregion
 }
