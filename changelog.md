@@ -6,7 +6,6 @@
   - `Random`: This method returns a random element from a list;
   - `PopLast`: This method removes and returns the last element of a list;
   - `PopFirst`: This method removes and returns the first element of a list;
-  - `RemoveAll`: This method removes all elements that satisfy a given condition;
   - `IndexOfMax`: This method returns the index of the maximum element in a list;
   - `IndexOfMin`: This method returns the index of the minimum element in a list;
   - `RemoveDuplicates`: This method removes all duplicates from a list;

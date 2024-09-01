@@ -232,31 +232,6 @@ public static class ListExtensions
     }
 
     /// <summary>
-    ///     Removes all items that satisfy the specified predicate.
-    /// </summary>
-    /// <typeparam name="T">The type of elements in the list.</typeparam>
-    /// <param name="list">The list to remove items from.</param>
-    /// <param name="match">The predicate that defines the conditions of the elements to remove.</param>
-    /// <returns>The number of elements removed from the list.</returns>
-    /// <example>
-    /// var numbers = new List&lt;int&gt; { 1, 2, 3, 4, 5 };
-    /// int removedCount = numbers.RemoveAll(n => n % 2 == 0);
-    /// // removedCount is 2, and numbers is now { 1, 3, 5 }
-    /// </example>
-    public static int RemoveAll<T>(this IList<T> list, Predicate<T> match)
-    {
-        var count = 0;
-        for (var i = list.Count - 1; i >= 0; i--)
-        {
-            if (!match(list[i])) continue;
-
-            list.RemoveAt(i);
-            count++;
-        }
-        return count;
-    }
-
-    /// <summary>
     ///     Gets the index of the maximum element in the list.
     /// </summary>
     /// <typeparam name="T">The type of elements in the list.</typeparam>

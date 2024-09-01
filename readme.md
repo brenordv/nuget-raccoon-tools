@@ -262,23 +262,6 @@ int firstItem = numbers.PopFirst();
 // firstItem is now 1, and numbers is now { 2, 3, 4, 5 }
 ```
 
-#### `RemoveAll<T>`
-Removes all items that satisfy the specified predicate.
-
-**Parameters:**
-- `list` (IList\<T\>): The list to remove items from.
-- `match` (Predicate\<T\>): The predicate that defines the conditions of the elements to remove.
-
-**Returns:**
-- int: The number of elements removed from the list.
-
-**Example Usage:**
-```csharp
-var numbers = new List<int> { 1, 2, 3, 4, 5 };
-int removedCount = numbers.RemoveAll(n => n % 2 == 0);
-// removedCount is 2, and numbers is now { 1, 3, 5 }
-```
-
 #### `IndexOfMax<T>`
 Gets the index of the maximum element in the list.
 
