@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.3.0] - Aug, 2024
+-  Added the following ListExtension methods:
+  - `Shuffle`: This method shuffles the elements of a list in place;
+  - `Random`: This method returns a random element from a list;
+  - `PopLast`: This method removes and returns the last element of a list;
+  - `PopFirst`: This method removes and returns the first element of a list;
+  - `IndexOfMax`: This method returns the index of the maximum element in a list;
+  - `IndexOfMin`: This method returns the index of the minimum element in a list;
+  - `RemoveDuplicates`: This method removes all duplicates from a list;
+
 ## [1.2.0] - Aug, 2024
 - Changed `Result` from class to `readonly struct`;
 - Create the convenience method `Result<T>.ForwardError<TOher>()`, which will forward the error of the current 

@@ -5,6 +5,8 @@ namespace Raccoon.Ninja.Tools.Tests.Extensions;
 
 public class ListExtensionsTests
 {
+    #region SafeAll
+
     [Fact]
     public void SafeAll_NullSource_ReturnsFalse()
     {
@@ -94,6 +96,10 @@ public class ListExtensionsTests
             .Should().Throw<ArgumentNullException>();
     }
 
+    #endregion
+
+    #region ForEachWithIndex
+
     [Fact]
     public void ForEachWithIndex_EmptyList_ShouldReturnEmptyEnumerable()
     {
@@ -170,6 +176,10 @@ public class ListExtensionsTests
         }
     }
 
+    #endregion
+
+    #region ContainsCaseInsensitive
+
     [Fact]
     public void ContainsCaseInsensitive_NullSource_ShouldReturnFalse()
     {
@@ -199,7 +209,8 @@ public class ListExtensionsTests
     [InlineData("test", "TEST")]
     [InlineData("TEST", "test")]
     [InlineData("TeSt", "tEsT")]
-    public void ContainsCaseInsensitive_MatchingTextWithDifferentCase_ShouldReturnTrue(string sourceText, string searchText)
+    public void ContainsCaseInsensitive_MatchingTextWithDifferentCase_ShouldReturnTrue(string sourceText,
+        string searchText)
     {
         var source = new List<string> { sourceText };
         var result = source.ContainsCaseInsensitive(searchText);
@@ -226,7 +237,7 @@ public class ListExtensionsTests
     public void ContainsCaseInsensitive_NullValueInSource_NullValuesAreErrors_ShouldThrowNullReferenceException()
     {
         var source = new List<string> { "test", null, "sample" };
-        Action act = () => source.ContainsCaseInsensitive("sample", nullValuesAreErrors: true);
+        var act = () => source.ContainsCaseInsensitive("sample", nullValuesAreErrors: true);
         act.Should().Throw<NullReferenceException>();
     }
 
@@ -253,8 +264,12 @@ public class ListExtensionsTests
         var result = source.ContainsCaseInsensitive("");
         result.Should().BeFalse();
     }
-    
-        [Fact]
+
+    #endregion
+
+    #region Replace
+
+    [Fact]
     public void Replace_NullSource_ShouldThrowArgumentNullException()
     {
         IList<string> source = null;
@@ -339,7 +354,509 @@ public class ListExtensionsTests
         source.Should().Equal(obj1, newObj, obj3);
     }
 
+    #endregion
+
+    #region HasElements
+
+    [Fact]
+    public void HasElements_NonEmptyList_ReturnsTrue()
+    {
+        // Arrange
+        var list = new List<int> { 1, 2, 3 };
+
+        // Act
+        var result = list.HasElements();
+
+        // Assert
+        result.Should().BeTrue();
+    }
+
+    [Fact]
+    public void HasElements_EmptyList_ReturnsFalse()
+    {
+        // Arrange
+        var list = new List<int>();
+
+        // Act
+        var result = list.HasElements();
+
+        // Assert
+        result.Should().BeFalse();
+    }
+
+    [Fact]
+    public void HasElements_NullList_ReturnsFalse()
+    {
+        // Arrange
+        List<int> list = null;
+
+        // Act
+        var result = list.HasElements();
+
+        // Assert
+        result.Should().BeFalse();
+    }
+
+    #endregion
+
+    #region Shuffle
+
+    [Fact]
+    public void Shuffle_List_ShouldShuffleItems()
+    {
+        // Arrange
+        var list = new List<int> { 1, 2, 3, 4, 5 };
+        var originalList = new List<int>(list);
+
+        // Act
+        list.Shuffle();
+
+        // Assert
+        list.Should().NotEqual(originalList);
+        list.Should().HaveCount(originalList.Count);
+        list.Should().Contain(originalList);
+    }
+
+    #endregion
+
+    #region Random
+
+    [Fact]
+    public void Random_List_ShouldReturnRandomItem()
+    {
+        // Arrange
+        var list = new List<int> { 1, 2, 3, 4, 5 };
+
+        // Act
+        var randomItem = list.Random();
+
+        // Assert
+        list.Should().Contain(randomItem);
+    }
+
+    [Fact]
+    public void Random_EmptyList_ShouldThrowArgumentException()
+    {
+        // Arrange
+        var list = new List<int>();
+
+        // Act
+        var act = () => list.Random();
+
+        // Assert
+        act.Should().Throw<ArgumentException>().WithMessage("The list is empty or null.");
+    }
+
+    [Fact]
+    public void Random_NullList_ShouldThrowArgumentException()
+    {
+        // Arrange
+        List<int> list = null;
+
+        // Act
+        var act = () => list.Random();
+
+        // Assert
+        act.Should().Throw<ArgumentException>().WithMessage("The list is empty or null.");
+    }
+
+    [Fact]
+    public void Random_SingleElementList_ShouldReturnThatElement()
+    {
+        // Arrange
+        var list = new List<int> { 42 };
+
+        // Act
+        var randomItem = list.Random();
+
+        // Assert
+        randomItem.Should().Be(42);
+    }
+
+    #endregion
+
+    #region PopLast
+
+    [Fact]
+    public void PopLast_List_ShouldReturnAndRemoveLastItem()
+    {
+        // Arrange
+        var list = new List<int> { 1, 2, 3, 4, 5 };
+
+        // Act
+        var lastItem = list.PopLast();
+
+        // Assert
+        lastItem.Should().Be(5);
+        list.Should().Equal(1, 2, 3, 4);
+    }
+
+    [Fact]
+    public void PopLast_EmptyList_ShouldThrowArgumentException()
+    {
+        // Arrange
+        var list = new List<int>();
+
+        // Act
+        var act = () => list.PopLast();
+
+        // Assert
+        act.Should().Throw<ArgumentException>().WithMessage("The list is empty or null.");
+    }
+
+    [Fact]
+    public void PopLast_SingleElementList_ShouldReturnAndRemoveElement()
+    {
+        // Arrange
+        var list = new List<int> { 42 };
+
+        // Act
+        var lastItem = list.PopLast();
+
+        // Assert
+        lastItem.Should().Be(42);
+        list.Should().BeEmpty();
+    }
+
+    [Fact]
+    public void PopLast_NullList_ShouldThrowArgumentException()
+    {
+        // Arrange
+        List<int> list = null;
+
+        // Act
+        var act = () => list.PopLast();
+
+        // Assert
+        act.Should().Throw<ArgumentException>().WithMessage("The list is empty or null.");
+    }
+
+    #endregion
+
+    #region PopFirst
+    [Fact]
+    public void PopFirst_List_ShouldReturnAndRemoveFirstItem()
+    {
+        // Arrange
+        var list = new List<int> { 1, 2, 3, 4, 5 };
+
+        // Act
+        var firstItem = list.PopFirst();
+
+        // Assert
+        firstItem.Should().Be(1);
+        list.Should().Equal(2, 3, 4, 5);
+    }
+
+    [Fact]
+    public void PopFirst_EmptyList_ShouldThrowArgumentException()
+    {
+        // Arrange
+        var list = new List<int>();
+
+        // Act
+        var act = () => list.PopFirst();
+
+        // Assert
+        act.Should().Throw<ArgumentException>().WithMessage("The list is empty or null.");
+    }
+
+    [Fact]
+    public void PopFirst_SingleElementList_ShouldReturnAndRemoveElement()
+    {
+        // Arrange
+        var list = new List<int> { 42 };
+
+        // Act
+        var firstItem = list.PopFirst();
+
+        // Assert
+        firstItem.Should().Be(42);
+        list.Should().BeEmpty();
+    }
+
+    [Fact]
+    public void PopFirst_NullList_ShouldThrowArgumentException()
+    {
+        // Arrange
+        List<int> list = null;
+
+        // Act
+        var act = () => list.PopFirst();
+
+        // Assert
+        act.Should().Throw<ArgumentException>().WithMessage("The list is empty or null.");
+    }
+    #endregion
+ 
+    #region IndexOfMax
+    [Fact]
+    public void IndexOfMax_List_ShouldReturnIndexOfMaxItem()
+    {
+        // Arrange
+        var list = new List<int> { 1, 3, 2, 5, 4 };
+
+        // Act
+        var maxIndex = list.IndexOfMax();
+
+        // Assert
+        maxIndex.Should().Be(3);
+    }
+    
+    [Fact]
+    public void IndexOfMax_NullList_ShouldThrowArgumentException()
+    {
+        // Arrange
+        List<int> list = null;
+
+        // Act
+        var act = () => list.IndexOfMax();
+
+        // Assert
+        act.Should().Throw<ArgumentException>().WithMessage("The list is empty or null.");
+    }
+
+    [Fact]
+    public void IndexOfMax_EmptyList_ShouldThrowArgumentException()
+    {
+        // Arrange
+        var list = new List<int>();
+
+        // Act
+        var act = () => list.IndexOfMax();
+
+        // Assert
+        act.Should().Throw<ArgumentException>().WithMessage("The list is empty or null.");
+    }
+
+    [Fact]
+    public void IndexOfMax_SingleElementList_ShouldReturnZero()
+    {
+        // Arrange
+        var list = new List<int> { 42 };
+
+        // Act
+        var result = list.IndexOfMax();
+
+        // Assert
+        result.Should().Be(0);
+    }
+
+    [Fact]
+    public void IndexOfMax_MultipleElementsList_ShouldReturnIndexOfMaxItem()
+    {
+        // Arrange
+        var list = new List<int> { 1, 3, 2, 5, 4 };
+
+        // Act
+        var result = list.IndexOfMax();
+
+        // Assert
+        result.Should().Be(3);
+    }
+
+    [Fact]
+    public void IndexOfMax_MultipleElementsWithDuplicateMaxValues_ShouldReturnFirstIndexOfMaxItem()
+    {
+        // Arrange
+        var list = new List<int> { 1, 5, 3, 5, 2 };
+
+        // Act
+        var result = list.IndexOfMax();
+
+        // Assert
+        result.Should().Be(1);
+    }
+    #endregion
+
+    #region IndexOfMin
+    [Fact]
+    public void IndexOfMin_List_ShouldReturnIndexOfMinItem()
+    {
+        // Arrange
+        var list = new List<int> { 1, 3, 2, 5, 4 };
+
+        // Act
+        var minIndex = list.IndexOfMin();
+
+        // Assert
+        minIndex.Should().Be(0);
+    }
+
+    [Fact]
+    public void IndexOfMin_EmptyList_ShouldThrowArgumentException()
+    {
+        // Arrange
+        var list = new List<int>();
+
+        // Act
+        var act = () => list.IndexOfMin();
+
+        // Assert
+        act.Should().Throw<ArgumentException>().WithMessage("The list is empty or null.");
+    }
+
+    [Fact]
+    public void IndexOfMin_SingleElementList_ShouldReturnZero()
+    {
+        // Arrange
+        var list = new List<int> { 42 };
+
+        // Act
+        var minIndex = list.IndexOfMin();
+
+        // Assert
+        minIndex.Should().Be(0);
+    }
+
+    [Fact]
+    public void IndexOfMin_NullList_ShouldThrowArgumentException()
+    {
+        // Arrange
+        List<int> list = null;
+
+        // Act
+        var act = () => list.IndexOfMin();
+
+        // Assert
+        act.Should().Throw<ArgumentException>().WithMessage("The list is empty or null.");
+    }
+
+    [Fact]
+    public void IndexOfMin_MultipleElementsList_ShouldReturnIndexOfMinItem()
+    {
+        // Arrange
+        var list = new List<int> { 3, 1, 4, 1, 5 };
+
+        // Act
+        var minIndex = list.IndexOfMin();
+
+        // Assert
+        minIndex.Should().Be(1);
+    }
+
+    [Fact]
+    public void IndexOfMin_MultipleElementsWithDuplicateMinValues_ShouldReturnFirstIndexOfMinItem()
+    {
+        // Arrange
+        var list = new List<int> { 3, 1, 4, 1, 5, 1 };
+
+        // Act
+        var minIndex = list.IndexOfMin();
+
+        // Assert
+        minIndex.Should().Be(1);
+    }
+    #endregion
+
+    #region RemoveDuplicates
+    [Fact]
+    public void RemoveDuplicates_List_ShouldRemoveDuplicateItems()
+    {
+        // Arrange
+        var list = new List<int> { 1, 2, 2, 3, 4, 4, 5 };
+
+        // Act
+        list.RemoveDuplicates();
+
+        // Assert
+        list.Should().Equal(1, 2, 3, 4, 5);
+    }
+
+    [Fact]
+    public void RemoveDuplicates_EmptyList_ShouldRemainEmpty()
+    {
+        // Arrange
+        var list = new List<int>();
+
+        // Act
+        list.RemoveDuplicates();
+
+        // Assert
+        list.Should().BeEmpty();
+    }
+
+    [Fact]
+    public void RemoveDuplicates_SingleElementList_ShouldRemainUnchanged()
+    {
+        // Arrange
+        var list = new List<int> { 1 };
+
+        // Act
+        list.RemoveDuplicates();
+
+        // Assert
+        list.Should().Equal(1);
+    }
+
+    [Fact]
+    public void RemoveDuplicates_ListWithNoDuplicates_ShouldRemainUnchanged()
+    {
+        // Arrange
+        var list = new List<int> { 1, 2, 3, 4, 5 };
+
+        // Act
+        list.RemoveDuplicates();
+
+        // Assert
+        list.Should().Equal(1, 2, 3, 4, 5);
+    }
+
+    [Fact]
+    public void RemoveDuplicates_ListWithConsecutiveDuplicates_ShouldRemoveDuplicates()
+    {
+        // Arrange
+        var list = new List<int> { 1, 1, 2, 2, 3, 3, 4, 4, 5, 5 };
+
+        // Act
+        list.RemoveDuplicates();
+
+        // Assert
+        list.Should().Equal(1, 2, 3, 4, 5);
+    }
+
+    [Fact]
+    public void RemoveDuplicates_ListWithNonConsecutiveDuplicates_ShouldRemoveDuplicates()
+    {
+        // Arrange
+        var list = new List<int> { 1, 2, 1, 3, 2, 4, 3, 5, 4, 5 };
+
+        // Act
+        list.RemoveDuplicates();
+
+        // Assert
+        list.Should().Equal(1, 2, 3, 4, 5);
+    }
+
+    [Fact]
+    public void RemoveDuplicates_ListWithAllElementsSame_ShouldRemoveAllButOne()
+    {
+        // Arrange
+        var list = new List<int> { 1, 1, 1, 1, 1 };
+
+        // Act
+        list.RemoveDuplicates();
+
+        // Assert
+        list.Should().Equal(1);
+    }
+
+    [Fact]
+    public void RemoveDuplicates_ListWithNullValues_ShouldRemoveDuplicates()
+    {
+        // Arrange
+        var list = new List<string> { "a", "b", null, "a", null, "b", "c" };
+
+        // Act
+        list.RemoveDuplicates();
+
+        // Assert
+        list.Should().Equal("a", null, "b", "c");
+    }
+    #endregion
+
     #region Test Helpers
+
     public static TheoryData<IList<object>> GetValidArgumentsForEachWithIndex()
     {
         return
@@ -349,7 +866,7 @@ public class ListExtensionsTests
             new object[] { "Foo", "Bar", "FooBar" }
         ];
     }
-    
+
     private class CustomType
     {
         public int Id { get; init; }
@@ -367,5 +884,6 @@ public class ListExtensionsTests
             return HashCode.Combine(Id, Name);
         }
     }
+
     #endregion
 }
