@@ -103,8 +103,7 @@ DefaultJob : .NET 8.0.8 (8.0.824.36612), X64 RyuJIT AVX2
 ## List Extensions
 The `ListExtensions` class provides several useful extension methods for working with lists and other enumerable collections.
 
-### Methods
-#### `SafeAll<T>`
+### `SafeAll<T>`
 Determines whether all elements of a sequence satisfy a condition safely.
 
 **Parameters:**
@@ -129,7 +128,7 @@ var numbers2 = new List<int> { 2, 4, 6, 8 };
 bool allEven2 = numbers2.SafeAll(n => n % 2 == 0); // Output: True
 ```
 
-#### `ForEachWithIndex<T>`
+### `ForEachWithIndex<T>`
 Returns an iterable list containing every item and its index.
 
 **Parameters:**
@@ -147,7 +146,7 @@ foreach (var (index, item) in list.ForEachWithIndex())
 }
 ```
 
-#### `ContainsCaseInsensitive`
+### `ContainsCaseInsensitive`
 Checks if the source contains the specified string, ignoring case.
 
 **Parameters:**
@@ -165,7 +164,7 @@ bool containsHello = list.ContainsCaseInsensitive("hello");
 Console.WriteLine(containsHello); // Output: True
 ```
 
-#### `Replace<T>`
+### `Replace<T>`
 Replaces the first occurrence of an object in the source.
 
 **Parameters:**
@@ -184,7 +183,7 @@ Console.WriteLine(replaced); // Output: True
 Console.WriteLine(string.Join(", ", list)); // Output: 1, 4, 3
 ```
 
-#### `HasElements<T>`
+### `HasElements<T>`
 Determines whether the specified collection has any elements.
 
 **Parameters:**
@@ -205,7 +204,7 @@ List<string> nullList = null;
 bool hasElements = nullList.HasElements(); // Output: False
 ```
 
-#### `Shuffle<T>`
+### `Shuffle<T>`
 Shuffles the list in place using the Fisher-Yates algorithm.
 
 **Parameters:**
@@ -218,7 +217,7 @@ numbers.Shuffle();
 // numbers is now shuffled, e.g., { 3, 1, 5, 2, 4 }
 ```
 
-#### `Random<T>`
+### `Random<T>`
 Gets a random item from the list.
 
 **Parameters:**
@@ -234,7 +233,7 @@ int randomItem = numbers.Random();
 // randomItem is now one of the elements in the list, e.g., 3
 ```
 
-#### `PopLast<T>`
+### `PopLast<T>`
 Removes and returns the last item from the list.
 
 **Parameters:**
@@ -250,7 +249,7 @@ int lastItem = numbers.PopLast();
 // lastItem is now 5, and numbers is now { 1, 2, 3, 4 }
 ```
 
-#### `PopFirst<T>`
+### `PopFirst<T>`
 Removes and returns the first item from the list.
 
 **Parameters:**
@@ -266,7 +265,7 @@ int firstItem = numbers.PopFirst();
 // firstItem is now 1, and numbers is now { 2, 3, 4, 5 }
 ```
 
-#### `IndexOfMax<T>`
+### `IndexOfMax<T>`
 Gets the index of the maximum element in the list.
 
 **Parameters:**
@@ -282,7 +281,7 @@ int maxIndex = numbers.IndexOfMax();
 // maxIndex is now 3, as the maximum element is 5 at index 3
 ```
 
-#### `IndexOfMin<T>`
+### `IndexOfMin<T>`
 Gets the index of the minimum element in the list.
 
 **Parameters:**
@@ -298,7 +297,7 @@ int minIndex = numbers.IndexOfMin();
 // minIndex is now 0, as the minimum element is 1 at index 0
 ```
 
-#### `RemoveDuplicates<T>`
+### `RemoveDuplicates<T>`
 Removes duplicates from the list while preserving order.
 
 **Parameters:**
@@ -314,8 +313,7 @@ numbers.RemoveDuplicates();
 ## String Extensions
 The `StringExtensions` class provides several useful extension methods for working with strings.
 
-### Methods
-#### `Minify`
+### `Minify`
 Minifies a text by replacing spaces, tabs, and line breaks with a single space.
 
 **Parameters:**
@@ -333,7 +331,7 @@ string minifiedText = text.Minify();
 Console.WriteLine(minifiedText); // Output: "This is a test. New line."
 ```
 
-#### `StripAccents`
+### `StripAccents`
 Removes all diacritics (accents) from a string.
 
 **Parameters:**
@@ -349,7 +347,7 @@ string strippedText = text.StripAccents();
 Console.WriteLine(strippedText); // Output: "Cafe"
 ```
 
-#### `OnlyDigits`
+### `OnlyDigits`
 Removes everything that is not a digit from a string.
 
 **Parameters:**
@@ -363,6 +361,26 @@ Removes everything that is not a digit from a string.
 string text = "Phone: 123-456-7890";
 string digits = text.OnlyDigits();
 Console.WriteLine(digits); // Output: "1234567890"
+```
+
+## DateTime Extensions
+The `DateTimeExtensions` class provides several useful extension methods for working with `DateTime` objects.
+
+### `DaysSince`
+Calculates the number of days since the specified date.
+
+**Parameters:**
+- `date` (DateTime): The date to calculate the days since.
+- `currentDate` (DateTime?): The current date to compare against. If null (not provided), the current date and time will be used. (Default: current datetime)
+- `allowMixedDateTimeKind` (bool): Indicates whether to allow mixed DateTimeKind values between the date and currentDate. (Default: false)
+
+**Returns:**
+- int: The number of days between the specified date and the current date.
+
+**Example Usage:**
+```csharp
+var pastDate = new DateTime(2020, 1, 1);
+var daysSince = pastDate.DaysSince(); // Calculates days since January 1, 2020 to today
 ```
 
 ## Operation Result
