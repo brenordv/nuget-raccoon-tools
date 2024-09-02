@@ -1,7 +1,7 @@
 ﻿using BenchmarkDotNet.Running;
 using Raccoon.Ninja.Tools.Benchmark.Tests.Benchmarks;
 
-const int benchmarkToRun = 2;
+const int benchmarkToRun = 3;
 
 
 switch (benchmarkToRun)
@@ -11,6 +11,9 @@ switch (benchmarkToRun)
         break;
     case 2:
         BenchmarkRunner.Run<ClassInstantiationBenchmark>();
+        break;
+    case 3:
+        BenchmarkRunner.Run<OperationResultBenchmark>();
         break;
     default:
         Console.WriteLine("No benchmark to run.");
