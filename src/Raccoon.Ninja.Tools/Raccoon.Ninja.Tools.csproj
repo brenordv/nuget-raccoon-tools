@@ -14,7 +14,9 @@
         <RepositoryUrl>https://github.com/brenordv/nuget-raccoon-tools</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <PackageTags>utils utility toolset chsarp-library guid5 uuid5 uuidv5 uuid guid functional c-sharp csharp dotnetcore discriminated-unions extensions datetime list string</PackageTags>
-        <PackageReleaseNotes></PackageReleaseNotes>
+        <PackageReleaseNotes>## [1.4.0] - Sep, 2024
+- Added DateTime extension methods:
+  - `DaysSince`: Returns the number of days since a given date (default: current date time);</PackageReleaseNotes>
         <Authors>Breno RdV</Authors>
         <PackageReadmeFile>readme.md</PackageReadmeFile>
         <AssemblyVersion>1.4.0</AssemblyVersion>

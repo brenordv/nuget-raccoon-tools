@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.4.0] - Sep, 2024
+- Added DateTime extension methods:
+  - `DaysSince`: Returns the number of days since a given date (default: current date time);
+
 ## [1.3.0] - Aug, 2024
 -  Added the following ListExtension methods:
   - `Shuffle`: This method shuffles the elements of a list in place;
