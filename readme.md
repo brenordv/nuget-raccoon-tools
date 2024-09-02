@@ -3,25 +3,29 @@
 ![GitHub Release](https://img.shields.io/github/v/release/brenordv/nuget-raccoon-tools)
 ![NuGet Version](https://img.shields.io/nuget/v/Raccoon.Ninja.Tools)
 ![NuGet Downloads](https://img.shields.io/nuget/dt/Raccoon.Ninja.Tools)
+![GitHub last commit](https://img.shields.io/github/last-commit/brenordv/nuget-raccoon-tools)
 
 ---
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nuget-raccoon-tools&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=brenordv_nuget-raccoon-tools)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nuget-raccoon-tools&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=brenordv_nuget-raccoon-tools)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nuget-raccoon-tools&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=brenordv_nuget-raccoon-tools)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nuget-raccoon-tools&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=brenordv_nuget-raccoon-tools)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nuget-raccoon-tools&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=brenordv_nuget-raccoon-tools)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nuget-raccoon-tools&metric=bugs)](https://sonarcloud.io/summary/new_code?id=brenordv_nuget-raccoon-tools)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nuget-raccoon-tools&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=brenordv_nuget-raccoon-tools)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nuget-raccoon-tools&metric=coverage)](https://sonarcloud.io/summary/new_code?id=brenordv_nuget-raccoon-tools)
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nuget-raccoon-tools&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=brenordv_nuget-raccoon-tools)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nuget-raccoon-tools&metric=coverage)](https://sonarcloud.io/summary/new_code?id=brenordv_nuget-raccoon-tools)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nuget-raccoon-tools&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=brenordv_nuget-raccoon-tools)
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nuget-raccoon-tools&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=brenordv_nuget-raccoon-tools)
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nuget-raccoon-tools&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=brenordv_nuget-raccoon-tools)
-[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nuget-raccoon-tools&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=brenordv_nuget-raccoon-tools)
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nuget-raccoon-tools&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=brenordv_nuget-raccoon-tools)
-[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nuget-raccoon-tools&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=brenordv_nuget-raccoon-tools)
+
 ---
 
 ## Description
 This is a collection of helpers and tools I find useful enough to reuse in multiple projects.
 I hope this can help other people too. :) 
+
+The idea of the package is to be lightweight and without external dependencies as much as possible. 
+Right now, the project is fully standalone.
 
 ## Changelog
 Check the [changelog](changelog.md) for the latest updates.
@@ -99,8 +103,7 @@ DefaultJob : .NET 8.0.8 (8.0.824.36612), X64 RyuJIT AVX2
 ## List Extensions
 The `ListExtensions` class provides several useful extension methods for working with lists and other enumerable collections.
 
-### Methods
-#### `SafeAll<T>`
+### `SafeAll<T>`
 Determines whether all elements of a sequence satisfy a condition safely.
 
 **Parameters:**
@@ -125,7 +128,7 @@ var numbers2 = new List<int> { 2, 4, 6, 8 };
 bool allEven2 = numbers2.SafeAll(n => n % 2 == 0); // Output: True
 ```
 
-#### `ForEachWithIndex<T>`
+### `ForEachWithIndex<T>`
 Returns an iterable list containing every item and its index.
 
 **Parameters:**
@@ -143,7 +146,7 @@ foreach (var (index, item) in list.ForEachWithIndex())
 }
 ```
 
-#### `ContainsCaseInsensitive`
+### `ContainsCaseInsensitive`
 Checks if the source contains the specified string, ignoring case.
 
 **Parameters:**
@@ -161,7 +164,7 @@ bool containsHello = list.ContainsCaseInsensitive("hello");
 Console.WriteLine(containsHello); // Output: True
 ```
 
-#### `Replace<T>`
+### `Replace<T>`
 Replaces the first occurrence of an object in the source.
 
 **Parameters:**
@@ -180,7 +183,7 @@ Console.WriteLine(replaced); // Output: True
 Console.WriteLine(string.Join(", ", list)); // Output: 1, 4, 3
 ```
 
-#### `HasElements<T>`
+### `HasElements<T>`
 Determines whether the specified collection has any elements.
 
 **Parameters:**
@@ -201,7 +204,7 @@ List<string> nullList = null;
 bool hasElements = nullList.HasElements(); // Output: False
 ```
 
-#### `Shuffle<T>`
+### `Shuffle<T>`
 Shuffles the list in place using the Fisher-Yates algorithm.
 
 **Parameters:**
@@ -214,7 +217,7 @@ numbers.Shuffle();
 // numbers is now shuffled, e.g., { 3, 1, 5, 2, 4 }
 ```
 
-#### `Random<T>`
+### `Random<T>`
 Gets a random item from the list.
 
 **Parameters:**
@@ -230,7 +233,7 @@ int randomItem = numbers.Random();
 // randomItem is now one of the elements in the list, e.g., 3
 ```
 
-#### `PopLast<T>`
+### `PopLast<T>`
 Removes and returns the last item from the list.
 
 **Parameters:**
@@ -246,7 +249,7 @@ int lastItem = numbers.PopLast();
 // lastItem is now 5, and numbers is now { 1, 2, 3, 4 }
 ```
 
-#### `PopFirst<T>`
+### `PopFirst<T>`
 Removes and returns the first item from the list.
 
 **Parameters:**
@@ -262,7 +265,7 @@ int firstItem = numbers.PopFirst();
 // firstItem is now 1, and numbers is now { 2, 3, 4, 5 }
 ```
 
-#### `IndexOfMax<T>`
+### `IndexOfMax<T>`
 Gets the index of the maximum element in the list.
 
 **Parameters:**
@@ -278,7 +281,7 @@ int maxIndex = numbers.IndexOfMax();
 // maxIndex is now 3, as the maximum element is 5 at index 3
 ```
 
-#### `IndexOfMin<T>`
+### `IndexOfMin<T>`
 Gets the index of the minimum element in the list.
 
 **Parameters:**
@@ -294,7 +297,7 @@ int minIndex = numbers.IndexOfMin();
 // minIndex is now 0, as the minimum element is 1 at index 0
 ```
 
-#### `RemoveDuplicates<T>`
+### `RemoveDuplicates<T>`
 Removes duplicates from the list while preserving order.
 
 **Parameters:**
@@ -310,8 +313,7 @@ numbers.RemoveDuplicates();
 ## String Extensions
 The `StringExtensions` class provides several useful extension methods for working with strings.
 
-### Methods
-#### `Minify`
+### `Minify`
 Minifies a text by replacing spaces, tabs, and line breaks with a single space.
 
 **Parameters:**
@@ -329,7 +331,7 @@ string minifiedText = text.Minify();
 Console.WriteLine(minifiedText); // Output: "This is a test. New line."
 ```
 
-#### `StripAccents`
+### `StripAccents`
 Removes all diacritics (accents) from a string.
 
 **Parameters:**
@@ -345,7 +347,7 @@ string strippedText = text.StripAccents();
 Console.WriteLine(strippedText); // Output: "Cafe"
 ```
 
-#### `OnlyDigits`
+### `OnlyDigits`
 Removes everything that is not a digit from a string.
 
 **Parameters:**
@@ -359,6 +361,26 @@ Removes everything that is not a digit from a string.
 string text = "Phone: 123-456-7890";
 string digits = text.OnlyDigits();
 Console.WriteLine(digits); // Output: "1234567890"
+```
+
+## DateTime Extensions
+The `DateTimeExtensions` class provides several useful extension methods for working with `DateTime` objects.
+
+### `DaysSince`
+Calculates the number of days since the specified date.
+
+**Parameters:**
+- `date` (DateTime): The date to calculate the days since.
+- `currentDate` (DateTime?): The current date to compare against. If null (not provided), the current date and time will be used. (Default: current datetime)
+- `allowMixedDateTimeKind` (bool): Indicates whether to allow mixed DateTimeKind values between the date and currentDate. (Default: false)
+
+**Returns:**
+- int: The number of days between the specified date and the current date.
+
+**Example Usage:**
+```csharp
+var pastDate = new DateTime(2020, 1, 1);
+var daysSince = pastDate.DaysSince(); // Calculates days since January 1, 2020 to today
 ```
 
 ## Operation Result
@@ -396,6 +418,7 @@ class Program
 ```
 
 ### Performance
+#### Instantiation
 Quick update here. I caved in and changed from `class` to `readonly struct`. I think the performance benefits, thread
 safety, and immutability are worth it. Thankfully, this won't affect anyone, because the contracts are the same.
 
@@ -411,6 +434,47 @@ I'm aware that they are not the best, but it's good enough for a brief compariso
 
 To no one's surprise, instantiating a `struct` or `readonly struct` is by far the fastest option and won't allocate any
 memory.
+
+#### Usage
+For the usage benchmark test, I create the following scenarios:
+1. `ThrowExceptionOnError`: When an error occurs, an exception is thrown and captured by the caller;
+2. `ReturnResultOnError`: When an error occurs, the result is returned to the caller (instead of throwing an exception);
+3. `ReturnNullOnExceptionCaught`: When an error occurs, the result is returned as `null` to the caller;
+4. `ReturnImplicitResultOnExceptionCaught`: When an error occurs, the exception is implicitly converted to the Result type and returned to the caller;
+5. `ReturnExplicitResultOnExceptionCaught`: When an error occurs, the exception is explicitly converted to the Result type and returned to the caller;
+6. `ReturnSuccessList`: When the operation is successful, a list of string is returned to the caller;
+7. `ReturnSuccessResultList`: When the operation is successful, a list of string is returned as a Result type to the caller. The converstion is done implicitly.
+
+```text
+BenchmarkDotNet v0.14.0, Windows 10 (10.0.19045.4780/22H2/2022Update)
+Intel Core i7-9750H CPU 2.60GHz, 1 CPU, 12 logical and 6 physical cores
+.NET SDK 8.0.401
+[Host]     : .NET 8.0.8 (8.0.824.36612), X64 RyuJIT AVX2
+DefaultJob : .NET 8.0.8 (8.0.824.36612), X64 RyuJIT AVX2
+```
+
+| Method                                |         Mean |       Error |      StdDev |       Median | Ratio | RatioSD | Rank |   Gen0 | Allocated | Alloc Ratio | 
+|---------------------------------------|-------------:|------------:|------------:|-------------:|------:|--------:|-----:|-------:|----------:|------------:| 
+| ThrowExceptionOnError                 | 8,339.272 ns | 211.8029 ns | 614.4788 ns | 8,358.530 ns | 1.005 |    0.11 |    4 | 0.0458 |     344 B |        1.00 |
+| ReturnResultOnError                   |     8.545 ns |   0.3371 ns |   0.9834 ns |     8.411 ns | 0.001 |    0.00 |    1 | 0.0051 |      32 B |        0.09 | 
+| ReturnNullOnExceptionCaught           | 6,147.746 ns | 121.6040 ns | 318.2166 ns | 6,139.373 ns | 0.741 |    0.07 |    3 | 0.0305 |     224 B |        0.65 | 
+| ReturnImplicitResultOnExceptionCaught | 6,095.540 ns | 159.0650 ns | 461.4763 ns | 5,964.967 ns | 0.735 |    0.08 |    3 | 0.0381 |     256 B |        0.74 | 
+| ReturnExplicitResultOnExceptionCaught | 6,280.372 ns | 124.5711 ns | 332.5055 ns | 6,357.890 ns | 0.757 |    0.07 |    3 | 0.0381 |     256 B |        0.74 | 
+| ReturnSuccessList                     |    22.468 ns |   0.5101 ns |   0.6451 ns |    22.420 ns | 0.003 |    0.00 |    2 | 0.0140 |      88 B |        0.26 | 
+| ReturnSuccessResultList               |    23.845 ns |   0.5110 ns |   1.4074 ns |    23.536 ns | 0.003 |    0.00 |    2 | 0.0140 |      88 B |        0.26 | 
+
+In general terms, using the Operation Result to handle the results, in case of errors, is way faster than throwing an 
+exception and uses less memory (because of the overhead involved in the exception handling). So that's a great idea when
+you don't need details from an exception and just want to communicate an error.
+
+When capturing an unexpected exception, and returning a result (instead of null, empty list or something like that), 
+from the benchmark, it seems like there's no significant difference between the approaches. 
+
+For cases of success, the overhead is minimal (about 1.3ns), which isn't really significant, and with no extra memory 
+allocation.
+
+From this, seems like the Operation Result is a good choice for handling errors and returning results in a standardized
+way.
 
 ## Other
 Shamelessly plugging the link to my site: https://raccoon.ninja

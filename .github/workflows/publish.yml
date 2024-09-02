@@ -1,12 +1,15 @@
 name: Publish
 
 on:
-  push:
+  pull_request:
+    types:
+      - closed
     branches:
       - master
 
 jobs:
   test-code:
+    if: github.event.pull_request.merged == true && (startsWith(github.head_ref, 'feat/') || startsWith(github.head_ref, 'feature/'))
     uses: brenordv/github-workflows/.github/workflows/template-build-and-test-dotnet.yml@v1
     with:
       projectOrSolutionPath: './src/Raccoon.Ninja.Tools.sln'
