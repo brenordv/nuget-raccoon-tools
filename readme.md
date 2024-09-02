@@ -24,6 +24,9 @@
 This is a collection of helpers and tools I find useful enough to reuse in multiple projects.
 I hope this can help other people too. :) 
 
+The idea of the package is to be lightweight and without external dependencies as much as possible. 
+Right now, the project is fully standalone.
+
 ## Changelog
 Check the [changelog](changelog.md) for the latest updates.
 
