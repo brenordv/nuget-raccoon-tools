@@ -5,6 +5,15 @@ failure with an error. This class provides methods to map and process the result
 It's a somewhat functional approach to handling operation results, not fully adhering to the functional programming
 paradigm but providing some of its benefits.
 
+## Methods
+- `Tap`: Taps into the result instance and executes the appropriate action based on whether it is a success or a failure.
+- `TapAsync`: Taps into the result instance and executes the appropriate asynchronous action based on whether it is a success or a failure.
+- `Process`: Processes the result and returns a value based on whether it is a success or a failure.
+- `ProcessAsync`: Processes the result asynchronously and returns a value based on whether it is a success or a failure.
+- `ForwardError`: Forwards the error from the current result to a new result with a different payload type.
+- `[Result<bool> Extension] TapOnSuccess`: Executes the provided action if the result is a success and the payload is true.
+- `[Result<bool> Extension] TapOnSuccessAsync`: Executes the provided asynchronous action if the result is a success and the payload is true.
+
 ## Example Usage
 ```csharp
 using Raccoon.Ninja.Tools.OperationResult;
