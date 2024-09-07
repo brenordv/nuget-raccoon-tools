@@ -6,7 +6,7 @@ namespace Raccoon.Ninja.Tools.OperationResult.Exceptions;
 public class InvalidResultMapException : OperationResultException
 {
     public InvalidResultMapException(string message = null)
-        : base(message ?? "Result object was in an invalid state. Map function couldn't figure out what to do.")
+        : base(message ?? "Result object was in an invalid state.")
     {
     }
 }
