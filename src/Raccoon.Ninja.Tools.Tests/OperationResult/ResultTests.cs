@@ -96,10 +96,10 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
 
         #endregion
 
-        #region Map
+        #region Tap
 
         [Fact]
-        public void Map_ShouldCallSuccessAction_WhenResultIsSuccess()
+        public void Tap_ShouldCallSuccessAction_WhenResultIsSuccess()
         {
             // Arrange
             const string payload = "Success payload";
@@ -107,7 +107,7 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
             var successCalled = false;
 
             // Act
-            result.Map(
+            result.Tap(
                 _ => successCalled = true,
                 _ => throw new Exception("Should not be called")
             );
@@ -117,7 +117,7 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
         }
 
         [Fact]
-        public void Map_ShouldCallFailureAction_WhenResultIsFailure()
+        public void Tap_ShouldCallFailureAction_WhenResultIsFailure()
         {
             // Arrange
             var error = new Error("Error message");
@@ -125,7 +125,7 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
             var failureCalled = false;
 
             // Act
-            result.Map(
+            result.Tap(
                 _ => throw new Exception("Should not be called"),
                 _ => failureCalled = true
             );
@@ -135,13 +135,13 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
         }
 
         [Fact]
-        public void Map_ShouldThrowInvalidResultMapException_WhenBothErrorAndFailureActionAreNull()
+        public void Tap_ShouldThrowInvalidResultMapException_WhenBothErrorAndFailureActionAreNull()
         {
             // Arrange
             var result = new Result<string>((IError)null);
 
             // Act
-            var act = () => result.Map(
+            var act = () => result.Tap(
                 _ => throw new Exception("Should not be called"),
                 _ => throw new Exception("Should not be called")
             );
@@ -152,6 +152,86 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
 
         #endregion
 
+        #region TapAsync
+
+        [Fact]
+        public async Task TapAsync_ShouldCallSuccessAction_WhenResultIsSuccess()
+        {
+            // Arrange
+            const string payload = "Success payload";
+            var result = new Result<string>(payload);
+            var successCalled = false;
+
+            // Act
+            await result.TapAsync(
+                async _ =>
+                {
+                    await Task.CompletedTask;
+                    successCalled = true;
+                },
+                async _ =>
+                {
+                    await Task.CompletedTask;
+                    throw new Exception("Should not be called");
+                }
+            );
+
+            // Assert
+            successCalled.Should().BeTrue();
+        }
+
+        [Fact]
+        public async Task TapAsync_ShouldCallFailureAction_WhenResultIsFailure()
+        {
+            // Arrange
+            var error = new Error("Error message");
+            var result = new Result<string>(error);
+            var failureCalled = false;
+
+            // Act
+            await result.TapAsync(
+                async _ =>
+                {
+                    await Task.CompletedTask;
+                    throw new Exception("Should not be called");
+                },
+                async _ =>
+                {
+                    await Task.CompletedTask;
+                    failureCalled = true;
+                }
+            );
+
+            // Assert
+            failureCalled.Should().BeTrue();
+        }
+
+        [Fact]
+        public async Task TapAsync_ShouldThrowInvalidResultMapException_WhenBothErrorAndFailureActionAreNull()
+        {
+            // Arrange
+            var result = new Result<string>((IError)null);
+
+            // Act
+            var act = async () => await result.TapAsync(
+                async _ =>
+                {
+                    await Task.CompletedTask;
+                    throw new Exception("Should not be called");
+                },
+                async _ =>
+                {
+                    await Task.CompletedTask;
+                    throw new Exception("Should not be called");
+                }
+            );
+
+            // Assert
+            await act.Should().ThrowAsync<InvalidResultMapException>();
+        }
+
+        #endregion
+        
         #region Process
 
         [Fact]
@@ -206,6 +286,84 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
 
         #endregion
 
+        #region ProcessAsync
+
+        [Fact]
+        public async Task ProcessAsync_ShouldCallOnSuccessFunction_WhenResultIsSuccess()
+        {
+            // Arrange
+            const string payload = "Success payload";
+            var result = new Result<string>(payload);
+
+            // Act
+            var processedPayload = await result.ProcessAsync(
+                async resultPayload =>
+                {
+                    await Task.CompletedTask;
+                    return $"Processed: {resultPayload}";
+                },
+                async _ =>
+                {
+                    await Task.CompletedTask;
+                    return "Should not be called";
+                }
+            );
+
+            // Assert
+            processedPayload.Should().Be($"Processed: {payload}");
+        }
+
+        [Fact]
+        public async Task ProcessAsync_ShouldCallOnFailureFunction_WhenResultIsFailure()
+        {
+            // Arrange
+            var error = new Error("Error message");
+            var result = new Result<string>(error);
+
+            // Act
+            var processedPayload = await result.ProcessAsync(
+                async _ =>
+                {
+                    await Task.CompletedTask;
+                    return "Should not be called";
+                },
+                async failure =>
+                {
+                    await Task.CompletedTask;
+                    return $"Failed: {failure.ErrorMessage}";
+                }
+            );
+
+            // Assert
+            processedPayload.Should().Be($"Failed: {error.ErrorMessage}");
+        }
+
+        [Fact]
+        public async Task ProcessAsync_ShouldThrowInvalidResultMapException_WhenBothErrorAndOnFailureFunctionAreNull()
+        {
+            // Arrange
+            var result = new Result<string>((IError)null);
+
+            // Act
+            var act = async () => await result.ProcessAsync(
+                async _ =>
+                {
+                    await Task.CompletedTask;
+                    return "Should not be called";
+                },
+                async _ =>
+                {
+                    await Task.CompletedTask;
+                    return "Should not be called";
+                }
+            );
+
+            // Assert
+            await act.Should().ThrowAsync<InvalidResultMapException>();
+        }
+
+        #endregion
+        
         #region ToString
 
         [Fact]

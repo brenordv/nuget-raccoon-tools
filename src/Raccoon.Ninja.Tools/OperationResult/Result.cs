@@ -66,13 +66,13 @@ public readonly struct Result<TPayload>
     public static implicit operator Result<TPayload>(Exception exception) => new (new Error(null, exception));
 
     /// <summary>
-    /// Maps the result to the appropriate action based on whether it is a success or a failure.
+    /// Taps into the result instance, and access the appropriate action based on whether it is a success or a failure.
     /// </summary>
     /// <example>
     /// <code>
     /// var result = DoSomething();
     ///
-    /// result.Map(
+    /// result.Tap(
     ///     success => Console.WriteLine($"Success! Here's the payload: {success}"),
     ///     error => Console.WriteLine($"Error. Here's the error message: {error.ErrorMessage}")
     /// );
@@ -84,7 +84,7 @@ public readonly struct Result<TPayload>
     /// Thrown if both the error and the failure action are null, or if the error is
     /// null and the success action is null.
     /// </exception>
-    public void Map(Action<TPayload> success, Action<IError> failure)
+    public void Tap(Action<TPayload> success, Action<IError> failure)
     {
         if (_error is null && success is not null && _valueSet)
         {
@@ -96,6 +96,41 @@ public readonly struct Result<TPayload>
             throw new InvalidResultMapException();
 
         failure(_error);
+    }
+
+    /// <summary>
+    /// Taps into the result instance, and access the appropriate async action based on whether it is a success or a
+    /// failure.
+    /// </summary>
+    /// <example>
+    /// <code>
+    /// var result = await DoSomethingAsync();
+    ///
+    /// await result.TapAsync(
+    ///     async success => await Console.WriteLineAsync($"Success! Here's the payload: {success}"),
+    ///     async error => await Console.WriteLineAsync($"Error. Here's the error message: {error.ErrorMessage}")
+    /// );
+    /// </code>
+    /// </example>
+    /// <param name="success">The async action to execute if the result is a success.</param>
+    /// <param name="failure">The async action to execute if the result is a failure.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    /// <exception cref="InvalidResultMapException">
+    /// Thrown if both the error and the failure action are null, or if the error is
+    /// null and the success action is null.
+    /// </exception>
+    public async Task TapAsync(Func<TPayload, Task> success, Func<IError, Task> failure)
+    {
+        if (_error is null && success is not null && _valueSet)
+        {
+            await success(_value);
+            return;
+        }
+
+        if (_error is null || failure is null) 
+            throw new InvalidResultMapException();
+
+        await failure(_error);
     }
 
     /// <summary>
@@ -132,6 +167,42 @@ public readonly struct Result<TPayload>
             throw new InvalidResultMapException();
 
         return onFailure(_error);
+    }
+
+    /// <summary>
+    /// Processes the result asynchronously and returns a value based on whether it is a success or a failure.
+    /// </summary>
+    /// <example>
+    /// <code>
+    /// var result = await GetMoviesAsync();
+    /// var movies = await result.ProcessAsync(
+    ///     async resultList => await FormatMoviesAsync(resultList),
+    ///     async error => {
+    ///       await _logger.LogErrorAsync(error.ErrorMessage, error.Exception);
+    ///       return []; 
+    ///     }
+    /// );
+    /// </code>
+    /// </example>
+    /// <param name="onSuccess">The asynchronous function to execute if the result is a success.</param>
+    /// <param name="onFailure">The asynchronous function to execute if the result is a failure.</param>
+    /// <typeparam name="TProcessedPayload">The type of the processed payload to return.</typeparam>
+    /// <returns>A task representing the asynchronous operation, containing the processed payload based on the result.</returns>
+    /// <exception cref="InvalidResultMapException">
+    /// Thrown if both the error and the onFailure function are null, or if the error is null and the
+    /// onSuccess function is null.
+    /// </exception>
+    public async Task<TProcessedPayload> ProcessAsync<TProcessedPayload>(
+        Func<TPayload, Task<TProcessedPayload>> onSuccess,
+        Func<IError, Task<TProcessedPayload>> onFailure)
+    {
+        if (_error is null && onSuccess is not null && _valueSet)
+            return await onSuccess(_value);
+
+        if (_error is null || onFailure is null) 
+            throw new InvalidResultMapException();
+
+        return await onFailure(_error);
     }
 
     /// <summary>
