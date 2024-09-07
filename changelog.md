@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.6.0] - Sep, 2024
+- Added `TapOnSuccess` and `TapOnSuccessAsync` extension  methods to help reduce boilerplate;
+
 ## [1.5.0] - Sep, 2024
 - Renamed method `Map` to `Tap` to better reflect its purpose;
 - Added `TapAsync` method to `Result<T>` class to allow side effects without changing the result;
