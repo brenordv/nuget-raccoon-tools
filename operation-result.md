@@ -13,6 +13,8 @@ paradigm but providing some of its benefits.
 - `ForwardError`: Forwards the error from the current result to a new result with a different payload type.
 - `[Result<bool> Extension] TapOnSuccess`: Executes the provided action if the result is a success and the payload is true.
 - `[Result<bool> Extension] TapOnSuccessAsync`: Executes the provided asynchronous action if the result is a success and the payload is true.
+- `[Result<bool> Extension] ChainOnSuccess`: Chains the provided function if the result is a success and the payload is true.
+- `[Result<bool> Extension] ChainOnSuccessAsync`: Chains the provided asynchronous function if the result is a success and the payload is true.
 
 ## Example Usage
 ```csharp

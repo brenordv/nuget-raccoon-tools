@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.7.0] - Sep, 2024
+- Added `ChainOnSuccess` and `ChainOnSuccessAsync` extension  methods to help reduce boilerplate;
+
+
 ## [1.6.0] - Sep, 2024
 - Added `TapOnSuccess` and `TapOnSuccessAsync` extension  methods to help reduce boilerplate;
 
