@@ -93,6 +93,26 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
                 failure => failure.Exception.Should().Be(exception)
             );
         }
+        
+        [Fact]
+        public void ImplicitConversion_ShouldThrowAnException_WhenConvertingFromNullToNotNullablePayloadType()
+        {
+            // This is a weird edge case. If you try to assign null to a Result object with a non-nullable type
+            // (e.g., Result<int>), the compiler will understand that you're trying to implicitly convert from an
+            // error object, and since all arguments of this "error object" is null, it will throw an exception.
+            // It's not possible to do this with a nullable type (e.g., Result<int?>), because the compiler won't 
+            // know what to do with the null value.
+
+            // Arrange + Act
+            var act = () =>
+            {
+                Result<bool> result = null;
+            };
+
+            // Assert
+            act.Should().Throw<OperationResultException>()
+                .WithMessage("Both error message and exception are null or empty.");
+        }
 
         #endregion
 
