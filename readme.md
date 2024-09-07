@@ -42,3 +42,6 @@ Check the [changelog](changelog.md) for the latest updates.
 - [String extensions](./string-extensions.md) with methods like `Minify`, `StripAccents`, `OnlyDigits`, etc.;
 - [DateTime extensions](./datetime-extensions.md) with methods like `DaysSince`, etc.;
 - [Operation Result](./operation-result.md) class to handle operations with success and error states with a functional approach;
+
+# TODO
+- [ ] Move common tests to the `ErrorPresets` class;
