@@ -15,6 +15,7 @@
         <RepositoryType>git</RepositoryType>
         <PackageTags>utils utility toolset chsarp-library guid5 uuid5 uuidv5 uuid guid functional c-sharp csharp dotnetcore discriminated-unions extensions datetime list string</PackageTags>
         <PackageReleaseNotes>## [1.5.0] - Sep, 2024
+- Renamed method `Map` to `Tap` to better reflect its purpose;
 - Added `TapAsync` method to `Result&lt;T&gt;` class to allow side effects without changing the result;
 - Added `ProcessAsync` method to `Result&lt;T&gt;` class to allow processing the result asynchronously;
 - Organized the project documentation;</PackageReleaseNotes>
