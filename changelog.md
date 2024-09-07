@@ -1,6 +1,7 @@
 # Changelog
 
 ## [1.5.0] - Sep, 2024
+- Renamed method `Map` to `Tap` to better reflect its purpose;
 - Added `TapAsync` method to `Result<T>` class to allow side effects without changing the result;
 - Added `ProcessAsync` method to `Result<T>` class to allow processing the result asynchronously;
 - Organized the project documentation;
