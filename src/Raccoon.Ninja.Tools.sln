@@ -14,6 +14,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "98. Docs", "98. Docs", "{BF
 		.gitignore = .gitignore
 		..\changelog.md = ..\changelog.md
 		..\license.txt = ..\license.txt
+		..\deterministic-guid.md = ..\deterministic-guid.md
+		..\list-extensions.md = ..\list-extensions.md
+		..\string-extensions.md = ..\string-extensions.md
+		..\datetime-extensions.md = ..\datetime-extensions.md
+		..\operation-result.md = ..\operation-result.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "99. Tests", "99. Tests", "{5D0CD8FF-2EDA-47E1-8C16-8E1C37E228D4}"
