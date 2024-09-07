@@ -8,6 +8,8 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
 {
     public class ResultTests
     {
+        #region Constructor
+
         [Fact]
         public void Constructor_ShouldSetPayload_WhenInitializedWithValue()
         {
@@ -39,6 +41,10 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
                 failure => failure.Should().Be(error)
             );
         }
+
+        #endregion
+
+        #region Implicit Conversion
 
         [Fact]
         public void ImplicitConversion_ShouldCreateResultFromPayload()
@@ -87,6 +93,10 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
                 failure => failure.Exception.Should().Be(exception)
             );
         }
+
+        #endregion
+
+        #region Map
 
         [Fact]
         public void Map_ShouldCallSuccessAction_WhenResultIsSuccess()
@@ -140,6 +150,10 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
             act.Should().Throw<InvalidResultMapException>();
         }
 
+        #endregion
+
+        #region Process
+
         [Fact]
         public void Process_ShouldCallOnSuccessFunction_WhenResultIsSuccess()
         {
@@ -190,6 +204,10 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
             act.Should().Throw<InvalidResultMapException>();
         }
 
+        #endregion
+
+        #region ToString
+
         [Fact]
         public void ToString_ShouldReturnSuccessMessage_WhenResultIsSuccess()
         {
@@ -217,7 +235,11 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
             // Assert
             resultString.Should().Be($"[Result:Failure] {error}");
         }
-        
+
+        #endregion
+
+        #region ForwardError
+
         [Fact]
         public void ForwardError_ShouldForwardError_WhenResultIsFailure()
         {
@@ -248,5 +270,7 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
             act.Should().Throw<OperationResultException>()
                 .WithMessage("Cannot forward error from a successful result.");
         }
+
+        #endregion
     }
 }
