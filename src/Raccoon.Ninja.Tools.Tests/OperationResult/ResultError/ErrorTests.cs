@@ -9,6 +9,8 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult.ResultError
     {
         private const string InvalidCtorArgsMessage = "Both error message and exception are null or empty.";
 
+        #region Constructor
+
         [Fact]
         public void Constructor_ShouldThrowException_WhenBothErrorMessageAndExceptionAreNullImplicitly()
         {
@@ -19,12 +21,13 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult.ResultError
             act.Should().Throw<OperationResultException>()
                 .WithMessage("Default constructor is not allowed.");
         }
-        
+
         [Theory]
         [InlineData(null, null)]
         [InlineData("", null)]
         [InlineData(" ", null)]
-        public void Constructor_ShouldThrowException_WhenBothErrorMessageIsNullExplicitly(string errorMessage, Exception exception)
+        public void Constructor_ShouldThrowException_WhenBothErrorMessageIsNullExplicitly(string errorMessage,
+            Exception exception)
         {
             // Act
             Action act = () => new Error(errorMessage, exception);
@@ -45,7 +48,7 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult.ResultError
             // Assert
             act.Should().Throw<OperationResultException>().WithMessage("Error message is null or empty.");
         }
-        
+
         [Fact]
         public void Constructor_ShouldSetErrorMessage_WhenOnlyErrorMessageIsProvided()
         {
@@ -89,6 +92,75 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult.ResultError
             error.Exception.Should().Be(exception);
         }
 
+        #endregion
+
+        #region WithException
+
+        [Fact]
+        public void WithException_ShouldThrowException_WhenStrictAndExceptionAlreadyExists()
+        {
+            // Arrange
+            var initialException = new Exception("Initial exception");
+            var error = new Error("Initial error message", initialException);
+            var newException = new Exception("New exception");
+
+            // Act
+            Action act = () => error.WithException(newException, strict: true);
+
+            // Assert
+            act.Should().Throw<OperationResultException>()
+                .WithMessage("Error already has an exception.");
+        }
+
+        [Fact]
+        public void WithException_ShouldReplaceException_WhenNotStrictAndExceptionAlreadyExists()
+        {
+            // Arrange
+            var initialException = new Exception("Initial exception");
+            var error = new Error("Initial error message", initialException);
+            var newException = new Exception("New exception");
+
+            // Act
+            var newError = error.WithException(newException, strict: false);
+
+            // Assert
+            newError.Exception.Should().Be(newException);
+            newError.ErrorMessage.Should().Be("Initial error message");
+        }
+
+        [Fact]
+        public void WithException_ShouldSetException_WhenNoExceptionExists()
+        {
+            // Arrange
+            var error = new Error("Initial error message");
+            var newException = new Exception("New exception");
+
+            // Act
+            var newError = error.WithException(newException);
+
+            // Assert
+            newError.Exception.Should().Be(newException);
+            newError.ErrorMessage.Should().Be("Initial error message");
+        }
+
+        [Fact]
+        public void WithException_ShouldThrowException_WhenExceptionIsNull()
+        {
+            // Arrange
+            var error = new Error("Initial error message");
+
+            // Act
+            Action act = () => error.WithException(null);
+
+            // Assert
+            act.Should().Throw<OperationResultException>()
+                .WithMessage("Exception is null.");
+        }
+
+        #endregion
+        
+        #region ToString
+
         [Fact]
         public void ToString_ShouldReturnErrorMessage_WhenErrorMessageIsSet()
         {
@@ -116,5 +188,7 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult.ResultError
             // Assert
             result.Should().Be(exception.Message);
         }
+
+        #endregion
     }
 }
