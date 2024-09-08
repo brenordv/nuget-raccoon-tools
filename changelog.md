@@ -1,8 +1,11 @@
 # Changelog
 
+## [1.8.0] - Sep, 2024
+- Added `WithMessage` to the `Error` class to allow changing the error message. It will allow for more flexibility when 
+handling errors;
+
 ## [1.7.0] - Sep, 2024
 - Added `ChainOnSuccess` and `ChainOnSuccessAsync` extension  methods to help reduce boilerplate;
-
 
 ## [1.6.0] - Sep, 2024
 - Added `TapOnSuccess` and `TapOnSuccessAsync` extension  methods to help reduce boilerplate;
