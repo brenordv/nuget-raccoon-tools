@@ -6,6 +6,7 @@ It's a somewhat functional approach to handling operation results, not fully adh
 paradigm but providing some of its benefits.
 
 ## Methods
+### Result<T>
 - `Tap`: Taps into the result instance and executes the appropriate action based on whether it is a success or a failure.
 - `TapAsync`: Taps into the result instance and executes the appropriate asynchronous action based on whether it is a success or a failure.
 - `Process`: Processes the result and returns a value based on whether it is a success or a failure.
@@ -15,6 +16,9 @@ paradigm but providing some of its benefits.
 - `[Result<bool> Extension] TapOnSuccessAsync`: Executes the provided asynchronous action if the result is a success and the payload is true.
 - `[Result<bool> Extension] ChainOnSuccess`: Chains the provided function if the result is a success and the payload is true.
 - `[Result<bool> Extension] ChainOnSuccessAsync`: Chains the provided asynchronous function if the result is a success and the payload is true.
+
+### Error
+- `WithExcception`: Creates a new error instance with the provided exception. This allows you to re-use an error object, by adding a new piece of information to it (the exception)
 
 ## Example Usage
 ```csharp
