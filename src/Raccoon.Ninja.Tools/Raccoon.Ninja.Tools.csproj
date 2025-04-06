@@ -19,7 +19,7 @@
   paradigm. The `Process` and `ProcessAsync` methods are still available, but they are marked as 
   obsolete and will be removed in the future;
 - Added `IsSuccess`, `IsFailure`, `Error`, and `Value` properties to the `Result&lt;T&gt;` class to make it easier to
-  use in OOP applications, while keeping the performance benefits of not throwing exceptions all around;</PackageReleaseNotes>
+  use in OOP applications, while keeping the performance benefits of not throwing exceptions all around.</PackageReleaseNotes>
         <Authors>Breno RdV</Authors>
         <PackageReadmeFile>readme.md</PackageReadmeFile>
         <AssemblyVersion>1.9.0</AssemblyVersion>
