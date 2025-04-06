@@ -9,8 +9,10 @@ paradigm but providing some of its benefits.
 ### Result<T>
 - `Tap`: Taps into the result instance and executes the appropriate action based on whether it is a success or a failure.
 - `TapAsync`: Taps into the result instance and executes the appropriate asynchronous action based on whether it is a success or a failure.
-- `Process`: Processes the result and returns a value based on whether it is a success or a failure.
-- `ProcessAsync`: Processes the result asynchronously and returns a value based on whether it is a success or a failure.
+- `Match`: Processes the result and returns a value based on whether it is a success or a failure.
+- `MatchAsync`: Processes the result asynchronously and returns a value based on whether it is a success or a failure.
+- `Process`: Same as `Match`, but it's obsolete and will be removed in the future. Use `Match` instead.
+- `ProcessAsync`: Same as `MatchAsync`, but it's obsolete and will be removed in the future. Use `MatchAsync` instead.
 - `ForwardError`: Forwards the error from the current result to a new result with a different payload type.
 - `[Result<bool> Extension] TapOnSuccess`: Executes the provided action if the result is a success and the payload is true.
 - `[Result<bool> Extension] TapOnSuccessAsync`: Executes the provided asynchronous action if the result is a success and the payload is true.
@@ -38,7 +40,7 @@ class Program
 
         // Example processing result and getting an object back.
         var result2 = DoSomethingElseAndReturnPayload();
-        var processedPayload = failureResult.Process(
+        var processedPayload = failureResult.Match(
             success => $"Processed: {success}", // Only executed if successful
             failure => $"Failed: {failure.ErrorMessage}" // Only executed if failed
         );
@@ -74,6 +76,14 @@ For the usage benchmark test, I create the following scenarios:
 5. `ReturnExplicitResultOnExceptionCaught`: When an error occurs, the exception is explicitly converted to the Result type and returned to the caller;
 6. `ReturnSuccessList`: When the operation is successful, a list of string is returned to the caller;
 7. `ReturnSuccessResultList`: When the operation is successful, a list of string is returned as a Result type to the caller. The converstion is done implicitly.
+8. Property `IsSuccess`: A boolean property that indicates whether the operation was successful or not.
+9. Property `IsFailure`: A boolean property that indicates whether the operation failed or not.
+10. Property `Error`: A property that returns the error object if the operation failed, or null if it was successful.
+11. Property `Value`: A property that returns the value if the operation was successful, or default (null) if it failed.
+
+> Note: I'm aware that the last four properties are not exactly in tune with the functional programming paradigm, but
+> they are useful for traditional OOP programming and will help maintain readability in those types of projects.
+
 
 ```text
 BenchmarkDotNet v0.14.0, Windows 10 (10.0.19045.4780/22H2/2022Update)

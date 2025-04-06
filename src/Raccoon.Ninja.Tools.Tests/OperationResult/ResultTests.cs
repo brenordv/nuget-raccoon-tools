@@ -9,7 +9,6 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
     public class ResultTests
     {
         #region Constructor
-
         [Fact]
         public void Constructor_ShouldSetPayload_WhenInitializedWithValue()
         {
@@ -20,7 +19,7 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
             var result = new Result<string>(payload);
 
             // Assert
-            result.Process(
+            result.Match(
                 success => success.Should().Be(payload),
                 _ => throw new Exception("Should not be called")
             );
@@ -36,7 +35,7 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
             var result = new Result<string>(error);
 
             // Assert
-            result.Process(
+            result.Match(
                 _ => throw new Exception("Should not be called"),
                 failure => failure.Should().Be(error)
             );
@@ -45,7 +44,6 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
         #endregion
 
         #region Implicit Conversion
-
         [Fact]
         public void ImplicitConversion_ShouldCreateResultFromPayload()
         {
@@ -56,7 +54,7 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
             Result<string> result = payload;
 
             // Assert
-            result.Process(
+            result.Match(
                 success => success.Should().Be(payload),
                 _ => throw new Exception("Should not be called")
             );
@@ -72,7 +70,7 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
             Result<string> result = error;
 
             // Assert
-            result.Process(
+            result.Match(
                 _ => throw new Exception("Should not be called"),
                 failure => failure.Should().Be(error)
             );
@@ -88,12 +86,12 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
             Result<string> result = exception;
 
             // Assert
-            result.Process(
+            result.Match(
                 _ => throw new Exception("Should not be called"),
                 failure => failure.Exception.Should().Be(exception)
             );
         }
-        
+
         [Fact]
         public void ImplicitConversion_ShouldThrowAnException_WhenConvertingFromNullToNotNullablePayloadType()
         {
@@ -117,7 +115,6 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
         #endregion
 
         #region Tap
-
         [Fact]
         public void Tap_ShouldCallSuccessAction_WhenResultIsSuccess()
         {
@@ -173,7 +170,6 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
         #endregion
 
         #region TapAsync
-
         [Fact]
         public async Task TapAsync_ShouldCallSuccessAction_WhenResultIsSuccess()
         {
@@ -251,9 +247,61 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
         }
 
         #endregion
-        
-        #region Process
 
+        #region Match
+        [Fact]
+        public void Match_ShouldCallOnSuccessFunction_WhenResultIsSuccess()
+        {
+            // Arrange
+            const string payload = "Success payload";
+            var result = new Result<string>(payload);
+
+            // Act
+            var processedPayload = result.Match(
+                resultPayload => $"Processed: {resultPayload}",
+                _ => "Should not be called"
+            );
+
+            // Assert
+            processedPayload.Should().Be($"Processed: {payload}");
+        }
+
+        [Fact]
+        public void Match_ShouldCallOnFailureFunction_WhenResultIsFailure()
+        {
+            // Arrange
+            var error = new Error("Error message");
+            var result = new Result<string>(error);
+
+            // Act
+            var processedPayload = result.Match(
+                _ => "Should not be called",
+                failure => $"Failed: {failure.ErrorMessage}"
+            );
+
+            // Assert
+            processedPayload.Should().Be($"Failed: {error.ErrorMessage}");
+        }
+
+        [Fact]
+        public void Match_ShouldThrowInvalidResultMapException_WhenBothErrorAndOnFailureFunctionAreNull()
+        {
+            // Arrange
+            var result = new Result<string>((IError)null);
+
+            // Act
+            Action act = () => result.Match(
+                _ => "Should not be called",
+                _ => "Should not be called"
+            );
+
+            // Assert
+            act.Should().Throw<InvalidResultMapException>();
+        }
+
+        #endregion
+
+        #region Process
         [Fact]
         public void Process_ShouldCallOnSuccessFunction_WhenResultIsSuccess()
         {
@@ -306,8 +354,84 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
 
         #endregion
 
-        #region ProcessAsync
+        #region MatchAsync
+        [Fact]
+        public async Task MatchAsync_ShouldCallOnSuccessFunction_WhenResultIsSuccess()
+        {
+            // Arrange
+            const string payload = "Success payload";
+            var result = new Result<string>(payload);
 
+            // Act
+            var processedPayload = await result.MatchAsync(
+                async resultPayload =>
+                {
+                    await Task.CompletedTask;
+                    return $"Processed: {resultPayload}";
+                },
+                async _ =>
+                {
+                    await Task.CompletedTask;
+                    return "Should not be called";
+                }
+            );
+
+            // Assert
+            processedPayload.Should().Be($"Processed: {payload}");
+        }
+
+        [Fact]
+        public async Task MatchAsync_ShouldCallOnFailureFunction_WhenResultIsFailure()
+        {
+            // Arrange
+            var error = new Error("Error message");
+            var result = new Result<string>(error);
+
+            // Act
+            var processedPayload = await result.MatchAsync(
+                async _ =>
+                {
+                    await Task.CompletedTask;
+                    return "Should not be called";
+                },
+                async failure =>
+                {
+                    await Task.CompletedTask;
+                    return $"Failed: {failure.ErrorMessage}";
+                }
+            );
+
+            // Assert
+            processedPayload.Should().Be($"Failed: {error.ErrorMessage}");
+        }
+
+        [Fact]
+        public async Task MatchAsync_ShouldThrowInvalidResultMapException_WhenBothErrorAndOnFailureFunctionAreNull()
+        {
+            // Arrange
+            var result = new Result<string>((IError)null);
+
+            // Act
+            var act = async () => await result.MatchAsync(
+                async _ =>
+                {
+                    await Task.CompletedTask;
+                    return "Should not be called";
+                },
+                async _ =>
+                {
+                    await Task.CompletedTask;
+                    return "Should not be called";
+                }
+            );
+
+            // Assert
+            await act.Should().ThrowAsync<InvalidResultMapException>();
+        }
+
+        #endregion
+
+        #region ProcessAsync
         [Fact]
         public async Task ProcessAsync_ShouldCallOnSuccessFunction_WhenResultIsSuccess()
         {
@@ -383,7 +507,8 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
         }
 
         #endregion
-        
+
+
         #region ToString
 
         [Fact]
@@ -429,7 +554,7 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
             var forwardedResult = result.ForwardError<int>();
 
             // Assert
-            forwardedResult.Process(
+            forwardedResult.Match(
                 _ => throw new Exception("Should not be called"),
                 failure => failure.Should().Be(error)
             );
@@ -447,6 +572,110 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
             // Assert
             act.Should().Throw<OperationResultException>()
                 .WithMessage("Cannot forward error from a successful result.");
+        }
+
+        #endregion
+
+        #region IsSuccess
+
+        [Fact]
+        public void IsSuccess_ShouldReturnTrue_WhenResultIsSuccess()
+        {
+            // Arrange
+            const string payload = "Success payload";
+            var result = new Result<string>(payload);
+
+            // Act & Assert
+            result.IsSuccess.Should().BeTrue();
+        }
+
+        [Fact]
+        public void IsSuccess_ShouldReturnFalse_WhenResultIsFailure()
+        {
+            // Arrange
+            var error = new Error("Error message");
+            var result = new Result<string>(error);
+
+            // Act & Assert
+            result.IsSuccess.Should().BeFalse();
+        }
+
+        #endregion
+
+        #region IsFailure
+
+        [Fact]
+        public void IsFailure_ShouldReturnTrue_WhenResultIsFailure()
+        {
+            // Arrange
+            var error = new Error("Error message");
+            var result = new Result<string>(error);
+
+            // Act & Assert
+            result.IsFailure.Should().BeTrue();
+        }
+
+        [Fact]
+        public void IsFailure_ShouldReturnFalse_WhenResultIsSuccess()
+        {
+            // Arrange
+            const string payload = "Success payload";
+            var result = new Result<string>(payload);
+
+            // Act & Assert
+            result.IsFailure.Should().BeFalse();
+        }
+
+        #endregion
+
+        #region Value
+
+        [Fact]
+        public void Value_ShouldReturnPayload_WhenResultIsSuccess()
+        {
+            // Arrange
+            const string payload = "Success payload";
+            var result = new Result<string>(payload);
+
+            // Act & Assert
+            result.Value.Should().Be(payload);
+        }
+
+        [Fact]
+        public void Value_ShouldReturnDefault_WhenResultIsFailure()
+        {
+            // Arrange
+            var error = new Error("Error message");
+            var result = new Result<string>(error);
+
+            // Act & Assert
+            result.Value.Should().Be(null);
+        }
+
+        #endregion
+
+        #region Error
+
+        [Fact]
+        public void Error_ShouldReturnError_WhenResultIsFailure()
+        {
+            // Arrange
+            var error = new Error("Error message");
+            var result = new Result<string>(error);
+
+            // Act & Assert
+            result.Error.Should().Be(error);
+        }
+
+        [Fact]
+        public void Error_ShouldReturnNull_WhenResultIsSuccess()
+        {
+            // Arrange
+            const string payload = "Success payload";
+            var result = new Result<string>(payload);
+
+            // Act & Assert
+            result.Error.Should().BeNull();
         }
 
         #endregion
