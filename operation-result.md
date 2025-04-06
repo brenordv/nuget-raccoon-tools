@@ -9,8 +9,10 @@ paradigm but providing some of its benefits.
 ### Result<T>
 - `Tap`: Taps into the result instance and executes the appropriate action based on whether it is a success or a failure.
 - `TapAsync`: Taps into the result instance and executes the appropriate asynchronous action based on whether it is a success or a failure.
-- `Process`: Processes the result and returns a value based on whether it is a success or a failure.
-- `ProcessAsync`: Processes the result asynchronously and returns a value based on whether it is a success or a failure.
+- `Match`: Processes the result and returns a value based on whether it is a success or a failure.
+- `MatchAsync`: Processes the result asynchronously and returns a value based on whether it is a success or a failure.
+- `Process`: Same as `Match`, but it's obsolete and will be removed in the future. Use `Match` instead.
+- `ProcessAsync`: Same as `MatchAsync`, but it's obsolete and will be removed in the future. Use `MatchAsync` instead.
 - `ForwardError`: Forwards the error from the current result to a new result with a different payload type.
 - `[Result<bool> Extension] TapOnSuccess`: Executes the provided action if the result is a success and the payload is true.
 - `[Result<bool> Extension] TapOnSuccessAsync`: Executes the provided asynchronous action if the result is a success and the payload is true.
@@ -38,7 +40,7 @@ class Program
 
         // Example processing result and getting an object back.
         var result2 = DoSomethingElseAndReturnPayload();
-        var processedPayload = failureResult.Process(
+        var processedPayload = failureResult.Match(
             success => $"Processed: {success}", // Only executed if successful
             failure => $"Failed: {failure.ErrorMessage}" // Only executed if failed
         );

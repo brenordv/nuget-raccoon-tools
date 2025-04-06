@@ -20,7 +20,7 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
             var result = new Result<string>(payload);
 
             // Assert
-            result.Process(
+            result.Match(
                 success => success.Should().Be(payload),
                 _ => throw new Exception("Should not be called")
             );
@@ -36,7 +36,7 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
             var result = new Result<string>(error);
 
             // Assert
-            result.Process(
+            result.Match(
                 _ => throw new Exception("Should not be called"),
                 failure => failure.Should().Be(error)
             );
@@ -56,7 +56,7 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
             Result<string> result = payload;
 
             // Assert
-            result.Process(
+            result.Match(
                 success => success.Should().Be(payload),
                 _ => throw new Exception("Should not be called")
             );
@@ -72,7 +72,7 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
             Result<string> result = error;
 
             // Assert
-            result.Process(
+            result.Match(
                 _ => throw new Exception("Should not be called"),
                 failure => failure.Should().Be(error)
             );
@@ -88,7 +88,7 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
             Result<string> result = exception;
 
             // Assert
-            result.Process(
+            result.Match(
                 _ => throw new Exception("Should not be called"),
                 failure => failure.Exception.Should().Be(exception)
             );
@@ -262,7 +262,7 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
             var result = new Result<string>(payload);
 
             // Act
-            var processedPayload = result.Process(
+            var processedPayload = result.Match(
                 resultPayload => $"Processed: {resultPayload}",
                 _ => "Should not be called"
             );
@@ -279,7 +279,7 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
             var result = new Result<string>(error);
 
             // Act
-            var processedPayload = result.Process(
+            var processedPayload = result.Match(
                 _ => "Should not be called",
                 failure => $"Failed: {failure.ErrorMessage}"
             );
@@ -295,7 +295,7 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
             var result = new Result<string>((IError)null);
 
             // Act
-            Action act = () => result.Process(
+            Action act = () => result.Match(
                 _ => "Should not be called",
                 _ => "Should not be called"
             );
@@ -316,7 +316,7 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
             var result = new Result<string>(payload);
 
             // Act
-            var processedPayload = await result.ProcessAsync(
+            var processedPayload = await result.MatchAsync(
                 async resultPayload =>
                 {
                     await Task.CompletedTask;
@@ -341,7 +341,7 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
             var result = new Result<string>(error);
 
             // Act
-            var processedPayload = await result.ProcessAsync(
+            var processedPayload = await result.MatchAsync(
                 async _ =>
                 {
                     await Task.CompletedTask;
@@ -365,7 +365,7 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
             var result = new Result<string>((IError)null);
 
             // Act
-            var act = async () => await result.ProcessAsync(
+            var act = async () => await result.MatchAsync(
                 async _ =>
                 {
                     await Task.CompletedTask;
@@ -429,7 +429,7 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
             var forwardedResult = result.ForwardError<int>();
 
             // Assert
-            forwardedResult.Process(
+            forwardedResult.Match(
                 _ => throw new Exception("Should not be called"),
                 failure => failure.Should().Be(error)
             );

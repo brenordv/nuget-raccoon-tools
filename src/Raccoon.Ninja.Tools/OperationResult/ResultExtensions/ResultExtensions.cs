@@ -96,7 +96,7 @@ public static class ResultExtensions
     /// </example>
     public static Result<TChainedPayload> ChainOnSuccess<TChainedPayload>(this Result<bool> result, Func<Result<TChainedPayload>> actionOnSuccess)
     {
-        return result.Process(resultSuccess => resultSuccess 
+        return result.Match(resultSuccess => resultSuccess 
             // If the result is a success, execute the action.
             ? actionOnSuccess() 
             // If the result is not a success, we return an error so the caller knows what is going on.
@@ -138,7 +138,7 @@ public static class ResultExtensions
         this Result<bool> result, 
         Func<Task<Result<TChainedPayload>>> actionOnSuccess)
     {
-        return await result.ProcessAsync(async resultSuccess => resultSuccess 
+        return await result.MatchAsync(async resultSuccess => resultSuccess 
             // If the result is a success, execute the action.
             ? await actionOnSuccess() 
             // If the result is not a success, we return an error so the caller knows what is going on.

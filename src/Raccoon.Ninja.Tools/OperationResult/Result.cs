@@ -139,8 +139,8 @@ public readonly struct Result<TPayload>
     /// <example>
     /// <code>
     /// var result = GetMovies();
-    /// var movies = result.Process(
-    ///     resultList => resultList,
+    /// var movies = result.Match(
+    ///     resultList => resultList, // could do some processing here.
     ///     error => {
     ///       _logger.LogError(error.ErrorMessage, error.Exception);
     ///       return []; 
@@ -156,7 +156,7 @@ public readonly struct Result<TPayload>
     /// Thrown if both the error and the onFailure function are null, or if the error is null and the
     /// onSuccess function is null.
     /// </exception>
-    public TProcessedPayload Process<TProcessedPayload>(
+    public TProcessedPayload Match<TProcessedPayload>(
         Func<TPayload, TProcessedPayload> onSuccess,
         Func<IError, TProcessedPayload> onFailure)
     {
@@ -167,6 +167,37 @@ public readonly struct Result<TPayload>
             throw new InvalidResultMapException();
 
         return onFailure(_error);
+    }
+
+    /// <summary>
+    /// Processes the result and returns a value based on whether it is a success or a failure.
+    /// </summary>
+    /// <example>
+    /// <code>
+    /// var result = GetMovies();
+    /// var movies = result.Process(
+    ///     resultList => resultList, // could do some processing here.
+    ///     error => {
+    ///       _logger.LogError(error.ErrorMessage, error.Exception);
+    ///       return []; 
+    ///     }
+    /// );
+    /// </code>
+    /// </example>
+    /// <param name="onSuccess">The function to execute if the result is a success.</param>
+    /// <param name="onFailure">The function to execute if the result is a failure.</param>
+    /// <typeparam name="TProcessedPayload">The type of the processed payload to return.</typeparam>
+    /// <returns>The processed payload based on the result.</returns>
+    /// <exception cref="InvalidResultMapException">
+    /// Thrown if both the error and the onFailure function are null, or if the error is null and the
+    /// onSuccess function is null.
+    /// </exception>
+    [Obsolete("Use Match instead. This method will be removed in future versions.")]
+    public TProcessedPayload Process<TProcessedPayload>(
+        Func<TPayload, TProcessedPayload> onSuccess,
+        Func<IError, TProcessedPayload> onFailure)
+    {
+        return Match(onSuccess, onFailure);
     }
 
     /// <summary>
@@ -192,7 +223,7 @@ public readonly struct Result<TPayload>
     /// Thrown if both the error and the onFailure function are null, or if the error is null and the
     /// onSuccess function is null.
     /// </exception>
-    public async Task<TProcessedPayload> ProcessAsync<TProcessedPayload>(
+    public async Task<TProcessedPayload> MatchAsync<TProcessedPayload>(
         Func<TPayload, Task<TProcessedPayload>> onSuccess,
         Func<IError, Task<TProcessedPayload>> onFailure)
     {
@@ -205,6 +236,37 @@ public readonly struct Result<TPayload>
         return await onFailure(_error);
     }
 
+    /// <summary>
+    /// Processes the result asynchronously and returns a value based on whether it is a success or a failure.
+    /// </summary>
+    /// <example>
+    /// <code>
+    /// var result = await GetMoviesAsync();
+    /// var movies = await result.ProcessAsync(
+    ///     async resultList => await FormatMoviesAsync(resultList),
+    ///     async error => {
+    ///       await _logger.LogErrorAsync(error.ErrorMessage, error.Exception);
+    ///       return []; 
+    ///     }
+    /// );
+    /// </code>
+    /// </example>
+    /// <param name="onSuccess">The asynchronous function to execute if the result is a success.</param>
+    /// <param name="onFailure">The asynchronous function to execute if the result is a failure.</param>
+    /// <typeparam name="TProcessedPayload">The type of the processed payload to return.</typeparam>
+    /// <returns>A task representing the asynchronous operation, containing the processed payload based on the result.</returns>
+    /// <exception cref="InvalidResultMapException">
+    /// Thrown if both the error and the onFailure function are null, or if the error is null and the
+    /// onSuccess function is null.
+    /// </exception>
+    [Obsolete("Use MatchAsync instead. This method will be removed in future versions.")]
+    public async Task<TProcessedPayload> ProcessAsync<TProcessedPayload>(
+        Func<TPayload, Task<TProcessedPayload>> onSuccess,
+        Func<IError, Task<TProcessedPayload>> onFailure)
+    {
+        return await MatchAsync(onSuccess, onFailure);
+    }
+    
     /// <summary>
     /// Forwards the error from the current result to a new result with a different payload type.
     /// This is a convenience method for cases where you just want to forward the error to the caller, so they will
