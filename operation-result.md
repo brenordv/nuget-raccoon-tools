@@ -76,6 +76,14 @@ For the usage benchmark test, I create the following scenarios:
 5. `ReturnExplicitResultOnExceptionCaught`: When an error occurs, the exception is explicitly converted to the Result type and returned to the caller;
 6. `ReturnSuccessList`: When the operation is successful, a list of string is returned to the caller;
 7. `ReturnSuccessResultList`: When the operation is successful, a list of string is returned as a Result type to the caller. The converstion is done implicitly.
+8. Property `IsSuccess`: A boolean property that indicates whether the operation was successful or not.
+9. Property `IsFailure`: A boolean property that indicates whether the operation failed or not.
+10. Property `Error`: A property that returns the error object if the operation failed, or null if it was successful.
+11. Property `Value`: A property that returns the value if the operation was successful, or default (null) if it failed.
+
+> Note: I'm aware that the last four properties are not exactly in tune with the functional programming paradigm, but
+> they are useful for traditional OOP programming and will help maintain readability in those types of projects.
+
 
 ```text
 BenchmarkDotNet v0.14.0, Windows 10 (10.0.19045.4780/22H2/2022Update)

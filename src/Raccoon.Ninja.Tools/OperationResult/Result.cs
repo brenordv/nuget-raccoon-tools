@@ -26,6 +26,46 @@ public readonly struct Result<TPayload>
     private readonly IError _error;
 
     /// <summary>
+    /// Indicates whether the result is a success.
+    /// </summary>
+    /// <remarks>
+    /// Not standard from the FP methodology, but useful in traditional C# applications.
+    /// Check if it is possible to use <see cref="Tap"/>, <see cref="TapAsync"/>,
+    /// <see cref="Match{TProcessedPayload}"/>, or <see cref="MatchAsync{TProcessedPayload}"/> instead.
+    /// </remarks>
+    public bool IsSuccess => _error is null && _valueSet;
+
+    /// <summary>
+    /// Indicates whether the result is a failure.
+    /// </summary>
+    /// <remarks>
+    /// Not standard from the FP methodology, but useful in traditional C# applications.
+    /// Check if it is possible to use <see cref="Tap"/>, <see cref="TapAsync"/>,
+    /// <see cref="Match{TProcessedPayload}"/>, or <see cref="MatchAsync{TProcessedPayload}"/> instead.
+    /// </remarks>
+    public bool IsFailure => !IsSuccess;
+
+    /// <summary>
+    /// The resulting payload from the operation.
+    /// </summary>
+    /// <remarks>
+    /// Not standard from the FP methodology, but useful in traditional C# applications.
+    /// Check if it is possible to use <see cref="Tap"/>, <see cref="TapAsync"/>,
+    /// <see cref="Match{TProcessedPayload}"/>, or <see cref="MatchAsync{TProcessedPayload}"/> instead.
+    /// </remarks>
+    public TPayload Value => _valueSet ? _value : default;
+
+    /// <summary>
+    /// The error that occurred during the operation.
+    /// </summary>
+    /// <remarks>
+    /// Not standard from the FP methodology, but useful in traditional C# applications.
+    /// Check if it is possible to use <see cref="Tap"/>, <see cref="TapAsync"/>,
+    /// <see cref="Match{TProcessedPayload}"/>, or <see cref="MatchAsync{TProcessedPayload}"/> instead.
+    /// </remarks>
+    public IError Error => _error;
+    
+    /// <summary>
     /// Constructor to be used in success cases.
     /// </summary>
     /// <param name="value">Resulting payload.</param>

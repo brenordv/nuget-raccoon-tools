@@ -93,7 +93,7 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
                 failure => failure.Exception.Should().Be(exception)
             );
         }
-        
+
         [Fact]
         public void ImplicitConversion_ShouldThrowAnException_WhenConvertingFromNullToNotNullablePayloadType()
         {
@@ -251,7 +251,7 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
         }
 
         #endregion
-        
+
         #region Process
 
         [Fact]
@@ -383,7 +383,7 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
         }
 
         #endregion
-        
+
         #region ToString
 
         [Fact]
@@ -447,6 +447,110 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
             // Assert
             act.Should().Throw<OperationResultException>()
                 .WithMessage("Cannot forward error from a successful result.");
+        }
+
+        #endregion
+
+        #region IsSuccess
+
+        [Fact]
+        public void IsSuccess_ShouldReturnTrue_WhenResultIsSuccess()
+        {
+            // Arrange
+            const string payload = "Success payload";
+            var result = new Result<string>(payload);
+
+            // Act & Assert
+            result.IsSuccess.Should().BeTrue();
+        }
+
+        [Fact]
+        public void IsSuccess_ShouldReturnFalse_WhenResultIsFailure()
+        {
+            // Arrange
+            var error = new Error("Error message");
+            var result = new Result<string>(error);
+
+            // Act & Assert
+            result.IsSuccess.Should().BeFalse();
+        }
+
+        #endregion
+
+        #region IsFailure
+
+        [Fact]
+        public void IsFailure_ShouldReturnTrue_WhenResultIsFailure()
+        {
+            // Arrange
+            var error = new Error("Error message");
+            var result = new Result<string>(error);
+
+            // Act & Assert
+            result.IsFailure.Should().BeTrue();
+        }
+
+        [Fact]
+        public void IsFailure_ShouldReturnFalse_WhenResultIsSuccess()
+        {
+            // Arrange
+            const string payload = "Success payload";
+            var result = new Result<string>(payload);
+
+            // Act & Assert
+            result.IsFailure.Should().BeFalse();
+        }
+
+        #endregion
+
+        #region Value
+
+        [Fact]
+        public void Value_ShouldReturnPayload_WhenResultIsSuccess()
+        {
+            // Arrange
+            const string payload = "Success payload";
+            var result = new Result<string>(payload);
+
+            // Act & Assert
+            result.Value.Should().Be(payload);
+        }
+
+        [Fact]
+        public void Value_ShouldReturnDefault_WhenResultIsFailure()
+        {
+            // Arrange
+            var error = new Error("Error message");
+            var result = new Result<string>(error);
+
+            // Act & Assert
+            result.Value.Should().Be(null);
+        }
+
+        #endregion
+
+        #region Error
+
+        [Fact]
+        public void Error_ShouldReturnError_WhenResultIsFailure()
+        {
+            // Arrange
+            var error = new Error("Error message");
+            var result = new Result<string>(error);
+
+            // Act & Assert
+            result.Error.Should().Be(error);
+        }
+
+        [Fact]
+        public void Error_ShouldReturnNull_WhenResultIsSuccess()
+        {
+            // Arrange
+            const string payload = "Success payload";
+            var result = new Result<string>(payload);
+
+            // Act & Assert
+            result.Error.Should().BeNull();
         }
 
         #endregion
