@@ -9,7 +9,6 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
     public class ResultTests
     {
         #region Constructor
-
         [Fact]
         public void Constructor_ShouldSetPayload_WhenInitializedWithValue()
         {
@@ -45,7 +44,6 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
         #endregion
 
         #region Implicit Conversion
-
         [Fact]
         public void ImplicitConversion_ShouldCreateResultFromPayload()
         {
@@ -117,7 +115,6 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
         #endregion
 
         #region Tap
-
         [Fact]
         public void Tap_ShouldCallSuccessAction_WhenResultIsSuccess()
         {
@@ -173,7 +170,6 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
         #endregion
 
         #region TapAsync
-
         [Fact]
         public async Task TapAsync_ShouldCallSuccessAction_WhenResultIsSuccess()
         {
@@ -252,10 +248,9 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
 
         #endregion
 
-        #region Process
-
+        #region Match
         [Fact]
-        public void Process_ShouldCallOnSuccessFunction_WhenResultIsSuccess()
+        public void Match_ShouldCallOnSuccessFunction_WhenResultIsSuccess()
         {
             // Arrange
             const string payload = "Success payload";
@@ -272,7 +267,7 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
         }
 
         [Fact]
-        public void Process_ShouldCallOnFailureFunction_WhenResultIsFailure()
+        public void Match_ShouldCallOnFailureFunction_WhenResultIsFailure()
         {
             // Arrange
             var error = new Error("Error message");
@@ -289,7 +284,7 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
         }
 
         [Fact]
-        public void Process_ShouldThrowInvalidResultMapException_WhenBothErrorAndOnFailureFunctionAreNull()
+        public void Match_ShouldThrowInvalidResultMapException_WhenBothErrorAndOnFailureFunctionAreNull()
         {
             // Arrange
             var result = new Result<string>((IError)null);
@@ -306,10 +301,62 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
 
         #endregion
 
-        #region ProcessAsync
+        #region Process
+        [Fact]
+        public void Process_ShouldCallOnSuccessFunction_WhenResultIsSuccess()
+        {
+            // Arrange
+            const string payload = "Success payload";
+            var result = new Result<string>(payload);
+
+            // Act
+            var processedPayload = result.Process(
+                resultPayload => $"Processed: {resultPayload}",
+                _ => "Should not be called"
+            );
+
+            // Assert
+            processedPayload.Should().Be($"Processed: {payload}");
+        }
 
         [Fact]
-        public async Task ProcessAsync_ShouldCallOnSuccessFunction_WhenResultIsSuccess()
+        public void Process_ShouldCallOnFailureFunction_WhenResultIsFailure()
+        {
+            // Arrange
+            var error = new Error("Error message");
+            var result = new Result<string>(error);
+
+            // Act
+            var processedPayload = result.Process(
+                _ => "Should not be called",
+                failure => $"Failed: {failure.ErrorMessage}"
+            );
+
+            // Assert
+            processedPayload.Should().Be($"Failed: {error.ErrorMessage}");
+        }
+
+        [Fact]
+        public void Process_ShouldThrowInvalidResultMapException_WhenBothErrorAndOnFailureFunctionAreNull()
+        {
+            // Arrange
+            var result = new Result<string>((IError)null);
+
+            // Act
+            Action act = () => result.Process(
+                _ => "Should not be called",
+                _ => "Should not be called"
+            );
+
+            // Assert
+            act.Should().Throw<InvalidResultMapException>();
+        }
+
+        #endregion
+
+        #region MatchAsync
+        [Fact]
+        public async Task MatchAsync_ShouldCallOnSuccessFunction_WhenResultIsSuccess()
         {
             // Arrange
             const string payload = "Success payload";
@@ -334,7 +381,7 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
         }
 
         [Fact]
-        public async Task ProcessAsync_ShouldCallOnFailureFunction_WhenResultIsFailure()
+        public async Task MatchAsync_ShouldCallOnFailureFunction_WhenResultIsFailure()
         {
             // Arrange
             var error = new Error("Error message");
@@ -359,7 +406,7 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
         }
 
         [Fact]
-        public async Task ProcessAsync_ShouldThrowInvalidResultMapException_WhenBothErrorAndOnFailureFunctionAreNull()
+        public async Task MatchAsync_ShouldThrowInvalidResultMapException_WhenBothErrorAndOnFailureFunctionAreNull()
         {
             // Arrange
             var result = new Result<string>((IError)null);
@@ -383,6 +430,84 @@ namespace Raccoon.Ninja.Tools.Tests.OperationResult
         }
 
         #endregion
+
+        #region ProcessAsync
+        [Fact]
+        public async Task ProcessAsync_ShouldCallOnSuccessFunction_WhenResultIsSuccess()
+        {
+            // Arrange
+            const string payload = "Success payload";
+            var result = new Result<string>(payload);
+
+            // Act
+            var processedPayload = await result.ProcessAsync(
+                async resultPayload =>
+                {
+                    await Task.CompletedTask;
+                    return $"Processed: {resultPayload}";
+                },
+                async _ =>
+                {
+                    await Task.CompletedTask;
+                    return "Should not be called";
+                }
+            );
+
+            // Assert
+            processedPayload.Should().Be($"Processed: {payload}");
+        }
+
+        [Fact]
+        public async Task ProcessAsync_ShouldCallOnFailureFunction_WhenResultIsFailure()
+        {
+            // Arrange
+            var error = new Error("Error message");
+            var result = new Result<string>(error);
+
+            // Act
+            var processedPayload = await result.ProcessAsync(
+                async _ =>
+                {
+                    await Task.CompletedTask;
+                    return "Should not be called";
+                },
+                async failure =>
+                {
+                    await Task.CompletedTask;
+                    return $"Failed: {failure.ErrorMessage}";
+                }
+            );
+
+            // Assert
+            processedPayload.Should().Be($"Failed: {error.ErrorMessage}");
+        }
+
+        [Fact]
+        public async Task ProcessAsync_ShouldThrowInvalidResultMapException_WhenBothErrorAndOnFailureFunctionAreNull()
+        {
+            // Arrange
+            var result = new Result<string>((IError)null);
+
+            // Act
+            var act = async () => await result.ProcessAsync(
+                async _ =>
+                {
+                    await Task.CompletedTask;
+                    return "Should not be called";
+                },
+                async _ =>
+                {
+                    await Task.CompletedTask;
+                    return "Should not be called";
+                }
+            );
+
+            // Assert
+            await act.Should().ThrowAsync<InvalidResultMapException>();
+        }
+
+        #endregion
+
 
         #region ToString
 
