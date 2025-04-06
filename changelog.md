@@ -2,7 +2,7 @@
 
 ## [1.9.0] - Apr, 2025
 - Changed the methods `Process` and `ProcessAsync` to `Match` and `MatchAsync` to adhere to the functional programming
-  paradigm. Sorry about that. 😂 The `Process` and `ProcessAsync` methods are still available, but they are marked as 
+  paradigm. The `Process` and `ProcessAsync` methods are still available, but they are marked as 
   obsolete and will be removed in the future;
 - Added `IsSuccess`, `IsFailure`, `Error`, and `Value` properties to the `Result<T>` class to make it easier to
   use in OOP applications, while keeping the performance benefits of not throwing exceptions all around;
